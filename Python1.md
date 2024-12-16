@@ -365,7 +365,7 @@ class ClassMixin:
         self.name = name
         print("mixin class constructor was called")
 
-class NotMixin: # NOTICE: ONLY USE *ARGS AND SUPER WHEN YOU ADD THE PLEASESTOP CLASS TO THE INHERITANCE
+class AgeMixin: # NOTICE: ONLY USE *ARGS AND SUPER WHEN YOU ADD THE PLEASESTOP CLASS TO THE INHERITANCE
     
     def __init__(self, age, *args) -> None:
         super().__init__(*args) 
@@ -377,7 +377,7 @@ class PleaseStop:
         self.hair_color = hair_color
         print("just stop")
 
-class MixAndNotMixCombined(ClassMixin, NotMixin, PleaseStop):
+class MixAndNotMixCombined(ClassMixin, AgeMixin, PleaseStop):
     def __init__(self, name, age, hair_color) -> None:
         super().__init__(name, age, hair_color)
         print("Their child was called")
