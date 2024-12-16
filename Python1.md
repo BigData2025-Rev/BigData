@@ -1,6 +1,6 @@
 # Python   
 ## Introduction
-Python is one of the most popular programming languages in the world, second only to Javascript in one study ([the study](https://bootcamp.berkeley.edu/blog/most-in-demand-programming-languages/)). Youtube, Google, and other tech giants have made use of Python, and there is a high demand for the language in the market today. It was created by Guido Von Rosssum, who named it after "Monty Python's Flying Circus" because he wanted the langauge to be "fun". The language is easy to use, easy to read, and easy to jump into.
+Python is one of the most popular programming languages in the world, second only to Javascript in one study ([the study](https://bootcamp.du.edu/blog/in-demand-programming-languages/)). Youtube, Google, and other tech giants have made use of Python, and there is a high demand for the language in the market today. It was created by Guido Von Rosssum, who named it after "Monty Python's Flying Circus" because he wanted the langauge to be "fun". The language is easy to use, easy to read, and easy to jump into.
 
 There are a few things to know about Python before jumping into the code itself:
 1. Python is a "High Level" language
