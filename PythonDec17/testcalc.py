@@ -1,6 +1,6 @@
 import pytest
-from funexcept import CustomException
-from calculatorMod import CalculatorImp
+from calculatorImp.funexcept import CustomException
+from calculatorImp.calculatorMod import CalculatorImp
 
 calculator = CalculatorImp()
 

@@ -1,5 +1,5 @@
-from calculator import Calculator
-from funexcept import CustomException
+from calculatorPack.calculator import Calculator
+from calculatorImp.funexcept import CustomException
 import numbers
 
 
