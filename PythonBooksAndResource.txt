@@ -1,0 +1,7 @@
+McKinney, Wes. Python for data analysis: Data wrangling with Pandas, NumPy, and IPython. " O'Reilly Media, Inc.", 2018.
+
+Lutz, Mark. Learning python: Powerful object-oriented programming. " O'Reilly Media, Inc.", 2013.
+
+
+For good NumPy Example:
+https://github.com/wcardoen/numpy-rmacc2020/tree/master/notebooks
