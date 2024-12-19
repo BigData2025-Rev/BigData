@@ -437,7 +437,7 @@ set(map(len, list_strings))
 ```
 As a simple dict comprehension example, we could create a lookup map of these strings to their locations in the list:
 ```Python
-loc_mapping = {val : index for index, val in enumerate(list_strings)}
+loc_mapping = {index : val for index, val in enumerate(list_strings)}
 loc_mapping
 #{'b': 0, 'is': 1, 'cat': 2, 'far': 3, 'love': 4, 'python': 5}
 ```
@@ -485,7 +485,7 @@ Since Python functions are objects, many constructs can be easily expressed that
 ```Python
 states = [' Alabama ', 'Georgia!', 'Georgia', 'georgia', 'FlOrIda','south carolina##', 'West virginia?']
 ```
-Anyone who has ever worked with user-submitted survey data has seen messy results like these. Lots of things need to happen to make this list of strings uniform and ready for analysis: stripping whitespace, removing punctuation symbols, and standardizing on proper capitalization. One way to do this is to use built-in string methods along with the re standard library module for regular expressions:
+Anyone who has ever worked with user-submitted survey data has seen messy results like these. Lots of things need to happen to make this list of strings uniform and ready for analysis: stripping whitespace, removing punctuation symbols, and standardizing on proper capitalization. One way to do this is to use built-in string methods along with the re standard library for regular expressions:
 ```Python
 import re
 def clean_strings(strings):
