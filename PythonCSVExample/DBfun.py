@@ -1,3 +1,7 @@
+"""
+This module demonstrates how to use sqllite
+
+"""
 import sqlite3
 
 conn = sqlite3.connect('students.db')
