@@ -165,9 +165,7 @@ UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE Cus
 UPDATE Customers SET ContactName='Juan' WHERE Country='Mexico';
 -- Be careful when updating records. If you omit the WHERE clause, ALL records will be updated!
 DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
--------- The following SQL statement selects the first three records from the "Customers" table (for SQL Server/MS Access):
-SELECT TOP 3 * FROM Customers;
--------- The following SQL statement shows the equivalent example for MySQL:
+-------- The following SQL statement selects the first three records from the "Customers" table 
 SELECT * FROM Customers LIMIT 3;
 --------- Aggregates
 SELECT MIN(Price) AS SmallestPrice FROM Products;SELECT MAX(Price) AS LargestPrice FROM Products;
