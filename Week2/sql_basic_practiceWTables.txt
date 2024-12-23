@@ -1,0 +1,466 @@
+Mysql JS>  \sql
+Mysql SQL>  \connect root@localhost
+Creating a session to 'root@localhost'
+Please provide the password for 'root@localhost': **************
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): y
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.25 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+-------- sql queries.
+1)CREATE DATABASE databasename;
+1a)USE DatabaseName;
+1b)SHOW DATABASES;
+-----------------------------------------
+2)
+DROP TABLE IF EXISTS Persons;
+CREATE TABLE  Persons
+(
+PersonID int,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+);
+2a)SHOW TABLES;
+-----------------------------------------------
+3)
+SQL PRIMARY KEY Constraint
+The PRIMARY KEY constraint uniquely identifies each record in a table.
+Primary keys must contain UNIQUE values, and cannot contain NULL values.
+A table can have only ONE primary key; and in the table, this primary key can consist of single or multiple columns (fields).
+-----------------------------------------------------------------------------------
+DROP TABLE IF EXISTS Persons;
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+INSERT INTO Persons (ID,LastName,FirstName,Age)
+VALUES (010,'West','George',31);
+
+-------------------------------------------------------------------
+4) 
+SQL FOREIGN KEY Constraint
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+-----------------------------------------------------------
+Persons Table
+PersonID	LastName	FirstName	Age
+1	        Hansen	         Ola	        30
+2	        Svendson	Tove	        23
+3	        Pettersen	Kari	        20
+----------------------------------------------------------
+Orders Table
+OrderID	OrderNumber	PersonID
+1	77895	         3
+2	44678	         3
+3	22456	         2
+4	24562	         1
+-------------------------------------------------------
+Notice that the "PersonID" column in the "Orders" table points to the "PersonID" column in the "Persons" table.
+The "PersonID" column in the "Persons" table is the PRIMARY KEY in the "Persons" table.
+The "PersonID" column in the "Orders" table is a FOREIGN KEY in the "Orders" table.
+The FOREIGN KEY constraint prevents invalid data from being inserted into the foreign key column, because it has to be one of the values contained in the parent table.
+---------------------------------
+DROP TABLE IF EXISTS Persons;
+CREATE TABLE Persons (
+    PersonID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (PersonID)
+);
+
+INSERT INTO Persons (PersonID,LastName,FirstName,Age)
+VALUES (1,'Ola','Hansen',30);
+
+INSERT INTO Persons (PersonID,LastName,FirstName,Age)
+VALUES (2,'Svendson','Tove',23);
+
+INSERT INTO Persons (PersonID,LastName,FirstName,Age)
+VALUES (3,'Pettersen','Kari',20);
+
+
+-----------------------------------------------------------
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+INSERT INTO Orders (OrderID,OrderNumber,PersonID)
+VALUES (1,77895,3);
+
+INSERT INTO Orders (OrderID,OrderNumber,PersonID)
+VALUES (2,44678,3);
+
+INSERT INTO Orders (OrderID,OrderNumber,PersonID)
+VALUES (3,22456,2);
+
+INSERT INTO Orders (OrderID,OrderNumber,PersonID)
+VALUES (4,24562,1);
+----------------------------------------------------------
+DROP TABLE IF EXISTS Customers;
+CREATE TABLE Customers(
+	CustomerID int NOT NULL,
+	CustomerName varchar(255),
+	ContactName varchar(255),
+	Address varchar(255),
+	City varchar(255),
+	PostalCode varchar(255),
+	Country varchar(255),
+	PRIMARY KEY(CustomerID)
+);
+
+INSERT INTO Customers (CustomerID,CustomerName,ContactName,Address,City,PostalCode,Country)
+VALUES (1,'Alfreds Futterkiste','Maria Anders','Obere Str. 57','Berlin','12209','Germany');
+
+INSERT INTO Customers (CustomerID,CustomerName,ContactName,Address,City,PostalCode,Country)
+VALUES (2,'Ana Trujillo','Emparedados','Avda. de la Constitución','México D.F.','05021','Mexico');
+
+INSERT INTO Customers (CustomerID,CustomerName,ContactName,Address,City,PostalCode,Country)
+VALUES (3,'Antonio Moreno','Taquería','Antonio Moreno Mataderos','México D.F.','05023','Mexico');
+
+INSERT INTO Customers (CustomerID,CustomerName,ContactName,Address,City,PostalCode,Country)
+VALUES (4,'Around the Horn','Thomas Hardy','120 Hanover Sq.','London','WA1 1DP','UK');
+
+INSERT INTO Customers (CustomerID,CustomerName,ContactName,Address,City,PostalCode,Country)
+VALUES (5,'Berglunds snabbköp','Christina','Berguvsvägen 8','Luleå','S-958 22','Sweden');
+
+DESCRIBE Customers;
+SELECT * FROM CUSTOMERS;
+-----------------------------------------------------------
+Below is a selection from the "Customers" table:
+
+CustomerID	CustomerName	        ContactName	  Address	                      City	    PostalCode	Country
+1               Alfreds Futterkiste	Maria Anders	  Obere Str. 57	                      Berlin	    12209	Germany
+2	        Ana Trujillo            Emparedados      Avda. de la Constitución             México D.F.   05021	Mexico
+3	        Antonio Moreno          Taquería	 Antonio Moreno	Mataderos 	      México D.F.   05023	Mexico
+4               Around the Horn	        Thomas Hardy	 120 Hanover Sq.                      London	    WA1 1DP	UK
+5	        Berglunds snabbköp	Christina      	 Berguvsvägen 8	                      Luleå	    S-958 22	Sweden
+
+5)
+SELECT DISTINCT Country FROM Customers;
+SELECT COUNT(DISTINCT Country) FROM Customers;
+SELECT * FROM Customers WHERE Country='Mexico';
+SELECT * FROM Customers WHERE Country='Germany' AND City='Berlin';
+SELECT * FROM Customers WHERE City='Berlin' OR City='München';
+SELECT * FROM Customers WHERE NOT Country='Germany';
+SELECT * FROM Customers WHERE Country='Germany' AND (City='Berlin' OR City='München');
+SELECT * FROM Customers WHERE NOT Country='Germany' AND NOT Country='USA';
+SELECT * FROM Customers ORDER BY Country;
+SELECT * FROM Customers ORDER BY Country DESC;
+SELECT * FROM Customers ORDER BY Country ASC, CustomerName DESC;
+SELECT CustomerName, ContactName, Address FROM Customers WHERE Address IS NULL;
+SELECT CustomerName, ContactName, Address FROM Customers WHERE Address IS NOT NULL;
+UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
+UPDATE Customers SET ContactName='Juan' WHERE Country='Mexico';
+-- Be careful when updating records. If you omit the WHERE clause, ALL records will be updated!
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+-------- The following SQL statement selects the first three records from the "Customers" table (for SQL Server/MS Access):
+SELECT TOP 3 * FROM Customers;
+-------- The following SQL statement shows the equivalent example for MySQL:
+SELECT * FROM Customers LIMIT 3;
+--------- Aggregates
+SELECT MIN(Price) AS SmallestPrice FROM Products;SELECT MAX(Price) AS LargestPrice FROM Products;
+SELECT COUNT(ProductID) FROM Products;
+SELECT AVG(Price) FROM Products;
+SELECT SUM(Quantity) FROM OrderDetails;
+------- selects all customers with a CustomerName ending with "a":
+SELECT * FROM Customers WHERE CustomerName LIKE 'a%';
+-------- selects all customers with a CustomerName that have "or" in any position:
+SELECT * FROM Customers WHERE CustomerName LIKE '%or%';
+-------- selects all customers with a CustomerName that have "r" in the second
+SELECT * FROM Customers WHERE CustomerName LIKE '_r%';
+-------- selects all customers with a CustomerName that starts with "a" and are at least 3 characters in length:
+SELECT * FROM Customers WHERE CustomerName LIKE 'a__%';
+--------- selects all customers with a ContactName that starts with "a" and ends with "o":
+SELECT * FROM Customers WHERE CustomerName LIKE 'a%o';
+--------- selects all customers with a CustomerName that does NOT start with "a":
+SELECT * FROM Customers WHERE CustomerName NOT LIKE 'a%';
+--------- SQL statement selects all customers with a City starting with "ber":
+SELECT * FROM Customers WHERE City LIKE 'ber%';
+----------selects all customers with a City containing the pattern "es": 
+SELECT * FROM Customers WHERE City LIKE '%es%';
+----------selects all customers with a City starting with any character, followe
+d by "ondon":
+SELECT * FROM Customers WHERE City LIKE '_ondon';
+-----------selects all customers with a City starting with "L", followed by any character, followed by "n", followed by any character, followed by "on":
+SELECT * FROM Customers WHERE City LIKE 'L_n_on';
+-----------selects all customers with a City starting with "b", "s", or "p":
+SELECT * FROM Customers WHERE City RLIKE '[bsp]';
+-----------selects all customers with a City starting with "a", "b", or "c":
+SELECT * FROM Customers WHERE City RLIKE '[a-c]';
+-----------select all customers with a City NOT starting with "b", "s", or "p":
+SELECT * FROM Customers WHERE City RLIKE '[ML]';
+
+----------------------------------------------------
+SELECT * FROM Customers WHERE Country IN ('Germany', 'France', 'UK');/SELECT * FROM Customers WHERE Country NOT IN ('Germany', 'France', 'UK');
+SELECT * FROM Products WHERE Price BETWEEN 10 AND 20;
+SELECT CustomerID AS ID, CustomerName AS Customer FROM Customers;
+Joins/Injections-->Assignment
+----------Returns the cities (only distinct values) from both the "Customers" and the "Suppliers" table:
+SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;
+---------returns the cities (duplicate values also) from both the "Customers" and the "Suppliers" table:
+SELECT City FROM Customers UNION ALL SELECT City FROM Suppliers ORDER BY City;
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country;
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country ORDER BY COUNT(CustomerID) DESC;
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 1;
+-------- SQL statement lists the number of customers in each country, sorted high to low (Only include countries with more than 5 customers):
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 2 ORDER BY Customer DESC;
+------SQL statement returns TRUE and lists the suppliers with a product price less than 20:
+SELECT SupplierName FROM Suppliers WHERE EXISTS (SELECT ProductName FROM Products WHERE Products.SupplierID = Suppliers.supplierID AND Price < 20);
+
+---------SQL goes through conditions and returns a value when the first condition is met:
+SELECT OrderID, Quantity,
+CASE
+    WHEN Quantity > 5 THEN 'The quantity is greater than 5'
+    WHEN Quantity = 5 THEN 'The quantity is 5'
+    ELSE 'The quantity is under 5'
+END AS QuantityText
+FROM OrderDetails;
+
+------SQL statement creates a stored procedure named "TestProc2" that selects all records from the "Customers" table:
+
+Delimiter //
+CREATE PROCEDURE TestProc2()
+BEGIN
+	SELECT * FROM Customers;
+END //
+
+DELIMITER ;
+
+CALL TestProc2() 
+
+
+-----single-line comment to ignore a statement:
+-- SELECT * FROM Customers;
+
+multi-line comment as an explanation:
+/*Select all the columns
+of all the records
+in the Customers table:*/
+SELECT * FROM Customers;
+
+--------------------------------------------------------------------------
+Sql Operators
+SQL Arithmetic Operators
+SQL Bitwise Operators
+SQL Comparison Operators
+SQL Compound Operators
+SQL Logical Operators
+
+------------------------------------------------------------------------------
+ALTER TABLE Customers ADD Email varchar(255);
+
+ALTER TABLE table_name DROP COLUMN column_name;
+
+-----------------------------------------------------------------------------
+The following constraints are commonly used in SQL:
+
+NOT NULL - Ensures that a column cannot have a NULL value
+UNIQUE - Ensures that all values in a column are different
+PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+FOREIGN KEY - Prevents actions that would destroy links between tables
+CHECK - Ensures that the values in a column satisfies a specific condition
+DEFAULT - Sets a default value for a column if no value is specified
+CREATE INDEX - Used to create and retrieve data from the database very quickly
+--------------------------------------------------------------------------------
+
+Updating a table with indexes takes more time than updating a table without (because the indexes also need an update). So, only create indexes on columns that will be frequently searched against.
+CREATE INDEX idx_lastname ON Persons (LastName);
+---------------------------------------------------------
+---------"Personid" column to be an auto-increment primary key field in the "Persons" table:
+CREATE TABLE Persons (
+    Personid int NOT NULL AUTO_INCREMENT,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (Personid)
+);
+-------------------------------------------------------------
+SQL Date Data Types
+MySQL comes with the following data types for storing a date or a date/time value in the database:
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+YEAR - format YYYY 
+
+ALTER TABLE Orders ADD OrderDate date;
+UPDATE Orders set OrderDate=('2008-11-11')
+SELECT * FROM Orders WHERE OrderDate='2008-11-11'
+-----------------------------------------------------
+CREATE VIEW G AS
+SELECT CustomerName, ContactName
+FROM Customers
+WHERE Country = 'Germany';
+------------------------------------------------
+The most common SQL hosting databases are MS SQL Server, Oracle, MySQL, and MS Access.
+-----------------------------------------------------
+DROP DATABASE testDB;
+DROP TABLE Shippers;
+TRUNCATE TABLE table_name;
+--------------------------------------------
+--------------------------------------------
+
+Window functions operate on a set of rows and return a single aggregated value for each row. The term Window describes the set of rows in the database on which the function will operate.
+
+We define the Window (set of rows on which functions operates) using an OVER() clause. We will discuss more about the OVER() clause in the article below.
+
+Types of Window functions
+Aggregate Window Functions
+SUM(), MAX(), MIN(), AVG(). COUNT()
+---------------------------------------------
+Ranking Window Functions
+RANK(), DENSE_RANK(), ROW_NUMBER()
+There are 3 types of ranking functions supported in MySQL-
+dense_rank()
+This function will assign rank to each row within a partition without gaps. Basically, the ranks are assigned in a consecutive manner i.e if there is a tie between values then they will be assigned the same rank, and next rank value will be one greater then the previous rank assigned.
+rank():
+This function will assign rank to each row within a partition with gaps. Here, ranks are assigned in a non-consecutive manner i.e if there is a tie between values then they will be assigned same rank, and next rank value will be previous rank + no of peers(duplicates).
+percent_rank():
+It returns the percentile rank of a row within a partition that ranges from 0 to 1. It tells the percentage of partition values less than the value in the current row, excluding the highest value.
+--------------------------------------------------------------------
+Value Window Functions
+LAG(), LEAD(), FIRST_VALUE(), LAST_VALUE()
+The LAG() function is used to get value from row that precedes the current row.
+
+The LEAD() function is used to get value from row that succedes the current row.
+-----------------------------------------------------------------------------------------------
+Find average salary of employees for each department and order employees within a department by age.
+
+SELECT Name, Age, Department, Salary, 
+ AVG(Salary) OVER( PARTITION BY Department ORDER BY Age) AS Avg_Salary
+ FROM employee
+
+
+
+DROP TABLE IF EXISTS Employee;
+CREATE TABLE Employee(
+`Name` varchar(255), 
+Age int , 
+Department varchar(255), 
+Salary float)
+
+SELECT * FROM Employee;
+INSERT INTO Employee Values ("Jon",20,"Sales",40000),("James",25,"Sales",20000),("Jake",35,"Delivery",30000),("Luke",40,"Delivery",1000000);
+SELECT `Name`, Age, Department, Salary, 
+ AVG(Salary) OVER( PARTITION BY Department) AS Avg_Salary
+ FROM Employee;
+
+
+----------------------------------------------------------------------
+CREATE TABLE OrderDetails(
+	OrderDetailID int NOT NULL,
+	OrderID int,
+	ProductID int,
+	Quantity int,
+	PRIMARY KEY(OrderDetailID)
+);
+
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (1,10248,11,12);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (2,10248,42,10);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (3,10248,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (4,10249,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (5,10249,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (6,10250,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (7,10250,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (8,10250,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (9,10251,72,5);
+
+INSERT INTO OrderDetails(OrderDetailID, OrderID,ProductID, Quantity)
+VALUES (10,10251,72,5);
+---------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS Products;
+CREATE TABLE Products(
+	ProductID int NOT NULL,
+	ProductName varchar(255),
+	SupplierID int,
+	CategoryID int,
+	Unit varchar(255),
+	Price float,
+	Primary Key(ProductID)
+);
+INSERT INTO Products(ProductID, ProductName, SupplierID, CategoryID, Unit, Price)
+VALUES (1,'Chais',1,1,'10 boxes x 20 bags',18);
+
+INSERT INTO Products(ProductID, ProductName, SupplierID, CategoryID, Unit, Price)
+VALUES (2,'Chang',1,1,'24 12 oz bottles',19);
+
+INSERT INTO Products(ProductID, ProductName, SupplierID, CategoryID, Unit, Price)
+VALUES (3,'Aniseed Syrup',1,2,'12 - 550 ml bottles',10);
+
+INSERT INTO Products(ProductID, ProductName, SupplierID, CategoryID, Unit, Price)
+VALUES (4,'Chef Anton`s Cajun Seasoning',2,2,'48 - 6 oz jars',22);
+
+INSERT INTO Products(ProductID, ProductName, SupplierID, CategoryID, Unit, Price)
+VALUES (5,'Chef Anton`s Gumbo Mix',2,2,'36 boxes',21.35);
+---------------------------------------------------------------------------------------------------
+CREATE TABLE Suppliers(
+	SupplierID int NOT NULL,
+	SupplierName varchar(255),
+	ContactName varchar(255),
+	Address varchar(255),
+	City varchar(255),
+	PostalCode varchar(255),
+	Country varchar(255),
+	PRIMARY KEY(SupplierID)
+);
+
+
+INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Address,City, PostalCode, Country)
+VALUES (1,'Exotic Liquid','Charlotte Cooper','49 Gilbert St.','London','EC1 4SD','UK');
+
+INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Address,City, PostalCode, Country)
+VALUES (2,'New Orleans Cajun Delights','Shelley Burke','P.O. Box 78934','New Orleans','70117','USA');
+
+INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Address, City, PostalCode, Country)
+VALUES (3,'Grandma Kelly`s Homestead','Regina Murphy','07 Oxford Rd.','Ann Arbor','48104','USA');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

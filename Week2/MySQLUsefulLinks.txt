@@ -1,0 +1,39 @@
+-- Do this first 
+https://dev.mysql.com/doc/refman/8.0/en/tutorial.html
+
+
+https://www.mysqltutorial.org/
+
+https://www.w3schools.com/mySQl/default.asp
+
+https://www.tutorialspoint.com/mysql/index.htm
+
+https://dev.mysql.com/doc/refman/8.0/en/
+
+-- ER Diagram in Mysql
+https://medium.com/@tushar0618/how-to-create-er-diagram-of-a-database-in-mysql-workbench-209fbf63fd03
+
+-- Set Isolation Levels
+https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html
+
+https://dev.mysql.com/doc/refman/8.0/en/set-transaction.html
+
+-- Geeks For Geeks Isolation Levels
+https://www.geeksforgeeks.org/transaction-isolation-levels-dbms/
+
+http://www.besttechtools.com/articles/article/sql-server-isolation-levels-by-example
+
+https://www.sqlshack.com/dirty-reads-and-the-read-uncommitted-isolation-level/
+
+https://jennyttt.medium.com/dirty-read-non-repeatable-read-and-phantom-read-bd75dd69d03a
+
+-- foreign keys and Cascade Delete
+https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html
+https://learnsql.com/blog/referential-constraints-foreign-keys-mysql/
+
+https://learnsql.com/blog/referential-constraints-foreign-keys-mysql/#:~:text=The%20ON%20UPDATE%20CASCADE%20tells,%E2%80%9D)%20with%20the%20new%20value.
+
+-- for reading from csv
+https://stackoverflow.com/questions/63264360/error-code-2068-file-requested-rejected-due-to-restrictions-on-access-with-root
+
+
