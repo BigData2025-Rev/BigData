@@ -47,19 +47,21 @@ FOREIGN KEY(genre_id) REFERENCES genre(g_id));
 
 INSERT INTO Movies(title,price, return_date,genre_id) VALUES
 ('The Avengers', 7.5, default, 1),
-('Captain America: Civil War', 8, default, 1)
+('Captain America: Civil War', 8, default, 1);
 
 
 
-DROP TABLE IF EXISTS  actor_movie;
 CREATE TABLE actor_movie (
 actor_id int,
 FOREIGN KEY (actor_id) references actors(a_id),
 movie_id int,
--- FOREIGN KEY (movie_id) references movies(m_id)
--- );
+FOREIGN KEY (movie_id) references movies(m_id)
+);
 
-
+INSERT INTO actor_movie(actor_id,movie_id) VALUES
+(1,1),
+(1,2);
+SELECT * FROM actor_movie
 
 
 
