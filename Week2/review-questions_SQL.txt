@@ -37,9 +37,8 @@
 - What is a dao?
 - What is the danger of putting values directly into our queries?
 
-- How do we specify dependencies using sbt?
 - What is a port number?
-- What's the default port for Postgres?
+- What's the default port for MySQL?
 - What is multiplicity?  Examples of 1-to-1, 1-to-N, N-to-N?
 - What is an Index?  
 - What advantages does creating an Index give us? Disadvantages?
