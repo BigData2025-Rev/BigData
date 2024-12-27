@@ -43,7 +43,7 @@ title varchar(50) not null,
 price float check(price>=0),
 return_date int default 0,
 genre_id int,
-FOREIGN KEY(genre_id) REFERENCES genre(g_id));
+FOREIGN KEY(genre_id) REFERENCES genre(g_id) on delete set null);
 
 INSERT INTO Movies(title,price, return_date,genre_id) VALUES
 ('The Avengers', 7.5, default, 1),
@@ -53,15 +53,21 @@ INSERT INTO Movies(title,price, return_date,genre_id) VALUES
 
 CREATE TABLE actor_movie (
 actor_id int,
-FOREIGN KEY (actor_id) references actors(a_id),
+FOREIGN KEY (actor_id) references actors(a_id) on delete set null,
 movie_id int,
-FOREIGN KEY (movie_id) references movies(m_id)
+FOREIGN KEY (movie_id) references movies(m_id) on delete set null
 );
 
 INSERT INTO actor_movie(actor_id,movie_id) VALUES
 (1,1),
 (1,2);
-SELECT * FROM actor_movie
+SELECT * FROM actor_movie;
+
+DELETE FROM genre WHERE name='Action';
+DELETE FROM actors WHERE name='Chris Evans';
+
+SELECT* FROM genre;
+SELECT * FROM movies;
 
 
 
