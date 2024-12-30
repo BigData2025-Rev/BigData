@@ -5,13 +5,13 @@ def main():
     # Connect to server
     client = MongoClient("mongodb://localhost:27017/")
 
-    db = client.get_database("movies1")
-    collection_movies = db.moviesTable
+    db = client.get_database("testdec30")
+    empCollection = db.empDetails
 
-    # Querying movies collection
-    movies = collection_movies.find()
-    for movie in movies:
-        print(movie['title'])
+    # Querying empDetails collection
+    employees = empCollection.find()
+    for employee in employees:
+        print(employee['First_Name'])
 
     with open("orders.json") as f:
         orders_data = json.load(f)
