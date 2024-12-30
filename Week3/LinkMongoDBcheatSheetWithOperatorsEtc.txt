@@ -1,0 +1,5 @@
+https://www.mongodb.com/developer/quickstart/cheat-sheet/
+
+https://docs.mongodb.com/manual/
+
+https://docs.mongodb.com/manual/reference/operator/query/
