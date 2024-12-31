@@ -1,0 +1,99 @@
+# useradd username -> Create a user with barebones information
+
+# su username -> We can't it's blocked by default
+
+# passwd username -> Add a password to that user
+
+# usermod -c "Full Name" username -> Add information to the user
+
+# useradd another -> Create another user
+
+# passwd another -> Provide the user a generic password
+
+# chage -d 0 another -> Make him choose his password when he logs in
+
+# cat /etc/passwd | grep '/home' | cut -d: -f1 -> Display real users
+
+# su username -> Switch to the user
+
+# whoami -> Display current user
+
+# who -> Display who is logged in (this is useful with remote connections)
+
+# echo ~ -> Your home is different now
+
+# sudo ls . -> We are trying to do sudo, you can't, username is not a super user
+
+# exit -> Get back to main user
+
+# sudo usermod -g wheel username -> Add the user to the admin group
+
+# su username -> Log back in
+
+# sudo ls . -> No we have administrator privileges
+
+# exit  -> Back to main user
+
+# su another -> To the other user, is going to ask you a strong password
+
+# exit -> Back to main user
+
+# su another -> You forgot the password.
+
+# sudo passwd -d another -> Get rid of a user's password (you are root, you can do wathever you want)
+
+# su another -> User has no password, this is insecure (specially if a super user), make sure you create a new generic password for him and "chage" it.
+
+# exit -> Back to main user
+
+# sudo lid -g wheel -> Display all users in the wheel group
+
+# sudo lid username -> Display where is this user in (notice that is himself)
+
+# sudo groupadd groupname -> Create a new group
+
+# cat /etc/group | cut -d: -f1 -> Display all groups
+
+# sudo lid another -> Check where the other user is in
+
+# sudo usermod -g groupname another -> At the other user into this new group
+
+# sudo lid another -> Now he is part of the new group
+
+# su username -> Switch to admin user
+
+# cd /tmp
+
+# touch username.txt
+
+# ls -l -> Check at the ownership, it's owned by username and wheel.
+
+# sudo touch root.txt
+
+# ls -l -> Check at the ownership, it's owned by root and root (big issues for non super users)
+
+# echo "something" >> root.txt -> You can't this is owned by user (you are an admin and can use sudo, but the purpose is to show you permissions)
+
+# sudo touch another.txt -> Create a file for the other user
+
+# sudo chmod 770 another.txt -> User and group can have access, but others cannot
+
+# su another -> Switch to another
+
+# cd /tmp
+
+# cat another.txt -> I can't, I'm "others", not part of the same group
+
+# echo "something" >> root.txt -> I can't either
+
+# exit -> Back to username
+
+# sudo chown :groupname another.txt -> Make the group that owns this file to the one that another is part of
+
+# sudo chown another:groupname root.txt -> Make the file owner and group that owns
+
+# su another
+
+# cat another.txt -> Different story, our group owns this file (Second sector of chmod is applying)
+
+# echo "something" >> root.txt -> Now I can, I'm the owner of the file (First sector of chmod is applying)

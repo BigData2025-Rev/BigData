@@ -1,0 +1,195 @@
+Day 2 
+
+Commands
+1)df
+
+The df command (short for disk free), is used to display information related to file systems about total space and available space.
+
+df
+df /home/wterry/
+df -a  ->If you want to display all the file system, use -a option.
+df --total  ->To get complete grand total, use –total option
+du 
+
+2)fdisk
+
+fdisk is a menu-driven command-line utility that allows you to create and manipulate partition tables on a hard disk.
+Be aware that fdisk is a dangerous tool and should be used with extreme caution. Only root or users with sudo privileges can manipulate the partition tables.
+
+sudo fdisk -l /dev/sda
+
+fdisk /dev/sdb
+
+3)sfdisk
+
+While sfdisk is similar to fdisk, there are few partition manipulation activities that are very easy to perform in sfdisk. For example, you can create new partitions in an non-interactive method using sfdisk.
+
+
+sfdisk -l
+
+sudo sfdisk -l /dev/sdd
+
+
+
+4)cfdisk
+cfdisk is used to create, delete, and modify partitions on a disk device. Enter the cfdisk command and include the device that you want to partition as an argument.
+
+cfdisk /dev/sda
+
+
+5)lsblk
+Lsblk is used to display details about block devices and these block devices(Except ram disk) are basically those files that represent devices connected to the pc.
+
+lsblk
+
+lsblk -a  ->To display empty block devices as well.
+lsblk -b  ->To print size information in bytes.
+
+6)blkid
+
+The blkid command allows you to display information about available block devices. To do so, type the following at a shell prompt as root
+For each listed block device, the blkid command displays available attributes such as its universally unique identifier (UUID), file system type (TYPE), or volume label (LABEL).
+
+blkid
+sudo blkid /dev/sda
+
+7)mdadm
+MDADM command is used to monitor and manage software RAID devices. RAID is nothing but a technique used for Performance management and Reduce data redundancy.
+
+The main purpose of mdadm command is to combine one or more physical disk drive components into one or more logical units.
+
+Multiple Disk and Device Management.
+Note that if you omit the --manage option, mdadm assumes management mode anyway. Keep this fact in mind to avoid running into trouble further down the road.
+
+mdadm --manage --help
+
+mdadm --manage RAID options devices
+
+mdadm --manage /dev/md0 --add /dev/sdd1
+mdadm --detail /dev/md0
+
+
+8)chmod
+In Unix-like operating systems, the chmod command is used to change the access mode of a file.
+The name is an abbreviation of change mode.
+
+The references are used to distinguish the users to whom the permissions apply i.e. they are list of letters that specifies whom to give permissions. The references are represented by one or more of the following letters:
+
+Reference   Class     Description
+u          owner      file's owner
+
+g          group      users who are members of
+                      the file's group
+
+o          others     users who are neither the
+                      file's owner nor members of 
+                      the file's group
+
+a          all       All three of the above, same as ugo
+
+
+The operator is used to specify how the modes of a file should be adjusted. The following operators are accepted:
+
+Operator  Description
++         Adds the specified modes to the
+          specified classes
+
+-         Removes the specified modes from 
+          the specified classes
+
+=         The modes specified are to be made
+          the exact modes for the specified 
+          classes
+
+The modes inUse the ls -l command to find out who owns a file or what group the file belongs to:
+
+indicate which permissions are to be granted or removed from the specified classes. There are three basic modes 
+which correspond to the basic permissions:
+
+r       Permission to read the file.
+w       Permission to write (or delete) the file.
+x       Permission to execute the file, or, in
+        the case of a directory, search it.
+
+ls -l
+
+before 
+drwxrwxr-x  mik   mik   EXAM
+
+ chmod u=rw EXAM 
+
+after
+ drw-rwxr-x   mik  mik    EXAM
+
+9)chown
+The chown command allows you to change the user and/or group ownership of a given file, directory, or symbolic link.in
+
+ls -l filename.txt
+
+
+-rw-r--r-- 12 linuxize users 12.0K Apr  8 20:51 filename.txt
+|[-][-][-]-   [------] [---]
+                |       |
+                |       +-----------> Group
+                +-------------------> Owner
+To change the owner of a file use the chown command followed by the user name of the new owner and the target file as an argument
+
+chown USER FILE
+
+
+10)find
+
+The find command in UNIX is a command line utility for walking a file hierarchy. It can be used to find files and directories and perform subsequent operations on them.
+
+find . -name test1.txt  ->Search a file with specific name.
+find . -maxdepth 1 -name 'test*'     ->Search a file with pattern.
+
+11)history
+history command is used to view the previously executed command. 
+
+history 
+history 5 
+history | grep find
+
+
+12)ps
+Linux provides us a utility called ps for viewing information related with the processes on a system which stands as abbreviation for “Process Status”
+
+ps
+ps -A
+
+PID – the unique process ID
+TTY – terminal type that the user is logged into
+TIME – amount of CPU in minutes and seconds that the process has been running
+CMD – name of the command that launched the process.
+
+13)kill
+
+kill command in Linux (located in /bin/kill), is a built-in command which is used to terminate processes manually.
+
+kill -l
+ps
+kill pid ->To show how to use a PID with the kill command.
+
+14)sed
+SED command in UNIX is stands for stream editor and it can perform lot’s of function on file like, searching, find and replace, insertion or deletion.
+
+cat > geekfile.txt
+
+unix is great os. unix is opensource. unix is free os.
+learn operating system.
+unix linux which one you choose.
+unix is easy to learn.unix is a multiuser os.Learn unix .unix is a powerful.
+
+sed 's/unix/linux/' geekfile.txt -->Replacing or substituting string
+sed 's/unix/linux/2' geekfile.txt -->Replacing the nth occurrence of a pattern in a line
+
+15)nohup
+
+nohup (No Hang Up) is a command in Linux systems that runs the process even after logging out from the shell/terminal. 
+
+nohup --version
+nohup bash geekfile.sh
+nohup bash geekfile.sh > output.txt
+
+

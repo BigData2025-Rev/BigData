@@ -1,0 +1,13 @@
+# vim ~/.bashrc -> open environment variables file
+
+-> In VIM
+export VARIABLE_NAME=value
+
+-> esc then :x! to save changes
+
+# source ~/.bashrc -> Refresh the environment variables
+
+# echo $VARIABLE_NAME -> There it is, if it's a directory -> cd to it, you can also TAB environment variables.
+
+** This will come in handy in the near future.
+** It's very important that you know how to set these up as an Administrator and how to mantain them

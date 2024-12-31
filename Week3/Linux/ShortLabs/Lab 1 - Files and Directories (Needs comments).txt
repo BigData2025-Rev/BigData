@@ -1,0 +1,118 @@
+  116  ls /
+  117  ls -a
+  118  clear
+  119  ls -a /
+  120  ls -l /
+  121  ls -lh /
+  122  ls
+  123  clear
+  124  cd /
+  125  ls
+  126  cd ..
+  127  cd
+  128  cd /
+  129  cd ~
+  130  echo ~
+  131  su
+  132  clear
+  133  cd /
+  134  ls
+  135  ls bin
+  136  ls
+  137  ls /etc
+  138  ls -l
+  139  clear
+  140  ls /etc
+  141  ls -l /etc
+  142  clear
+  143  ls
+  144  cd /var/log
+  145  ls
+  146  cat yum.log
+  147  sudo cat yum.log
+  148  clear
+  149  ls
+  150  cd /
+  151  ls
+  152  ls boot
+  153  clear
+  154  cd ~
+  155  cd .
+  156  cd ..
+  157  pwd
+  158  ls\
+  159  ls
+  160  cd peter.alagna/
+  161  ls
+  162  rm fruits.txt 
+  163  clear
+  164  ls
+  165  pwd
+  166  mkdir Data
+  167  cd /
+  168  mkdir ~/Data/Fruits
+  169  cd ~
+  170  ls
+  171  cd Data/
+  172  ls
+  173  cp Fruits/ .
+  174  cp Fruits/ Fruits2
+  175  cp Fruits Fruits2
+  176  clear
+  177  cd Fruits/
+  178  ls
+  179  touch fruits.txt
+  180  ls
+  181  pwd
+  182  cp fruits.txt ../
+  183  cd ..
+  184  ls
+  185  cp Fruits/ Fruits2/
+  186  mkdir Fruits2
+  187  ls
+  188  mv fruits.txt /Fruits2
+  189  mv fruits.txt Fruits2
+  190  ls
+  191  cd Fruits
+  192  cd ..
+  193  cd Fruits2
+  194  ls
+  195  cd ~/Data/Fruits
+  196  ls
+  197  echo apple > fruits.txt 
+  198  cat fruits.txt 
+  199  echo peach > fruits.txt 
+  200  cat fruits.txt 
+  201  echo apple >> fruits.txt 
+  202  cat fruits.txt 
+  203  ls
+  204  cd ..
+  205  ls
+  206  mv Fruits2 ~/
+  207  ls
+  208  cd ~
+  209  ls
+  210  rm Fruits2
+  211  rm -R Fruits2
+  212  ls
+  213  man rm
+  214  rm --help
+  215  clear
+  216  ls
+  217  cd Data/
+  218  ls
+  219  cd Fruits/
+  220  ls
+  221  cp fruits.txt fruits-copy.txt
+  222  ls
+  223  cat fruits-copy.txt 
+  224  du -h
+  225  ls -alh
+  226  clear
+  227  touch .fruits
+  228  ls
+  229  ls -a
+  230  cd ~
+  231  ls a
+  232  ls -a
+  233  man cd

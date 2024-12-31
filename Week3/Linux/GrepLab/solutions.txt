@@ -1,0 +1,31 @@
+#1
+grep '^T' cities.txt 
+
+#2
+grep 'gan$' cities.txt 
+
+#3
+grep '^[T,D,E]' cities.txt 
+
+#4
+grep '\<.ar' cities.txt 
+
+#5
+grep -v '^C' cities.txt 
+
+#6
+egrep -nor '[^ ]{14,}' cities.txt 
+
+#7
+grep '^B' cities.txt | wc -l
+
+#8
+grep -o 'd' citiest.txt | wc -l
+
+#9
+grep -E '(.)\1$' cities.txt
+
+#10
+cat cities.txt | grep -wi '^\(.\)\(.\).\2\1'
+
+ 

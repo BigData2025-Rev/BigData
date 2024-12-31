@@ -1,0 +1,135 @@
+- Download 500 different movies from https://mockaroo.com (movies column, 500 rows, Format: Custom)
+
+- Name the file movies.txt (remove the column name)
+
+
+*****REVIEW FILE AND DIRECTORY COMMANDS, THESE ARE ALWAYS NEEDED*****
+
+# mkdir ~/Data/Movies
+
+# ls ~/Data
+
+# su
+# sudo -i
+
+# cd /media -> here is where the mounted volumes are (ls)
+
+# cd sf_vbshared -> shared folder
+
+# who -> logged in users (to check username spelling)
+
+# mv movies.txt /home/username/Data/Movies remember that root's home is not the same, you can do your assignments of python directly here in root mode, for now the idea is to practice directory/files commands)
+
+# chown username:wheel /home/username/Data/movies.txt (covered in user management, change owner of the file to your personal user)
+
+# exit -> exit root mode
+
+# cd ~/Data/Movies
+
+*****QUERY COMMANDS*****
+
+# cat movies.txt
+
+# cat -n movies.txt
+
+# head movies.txt (10 default)
+
+# head -n 5 movies.txt (where are my line numbers? -n is used for something else here)
+
+# head -n 5 movies.txt | cat -n (here they are)
+
+# tail movies.txt (10 default)
+
+# tail -n 7 movies.txt
+
+# sort movies.txt (look how it is ignoring the quotes) -> ascending lines
+
+# sort -r movies.txt -> descending lines
+
+# head -n 1 movies.txt -> check which is your first movie
+
+# tac movies.txt -> cat in reverse order (this is not sorted, it's flipped)
+
+# tac movies.txt | cat -n | head (tac doesn't have -n)
+
+# cat -n movies.txt | tail (look at the mirroring)
+
+# wc movies.txt (lines, words, bytes)
+
+# wc -l movies.txt (only the lines)
+
+# wc -w movies.txt (only the words)
+
+# wc -c movies.txt (only the bytes)
+
+# tail -n1 | wc -w (count the words on the first line, notice no spaces)
+
+*****EXPRESSION QUERY COMMANDS (egrep)*****
+
+# grep 'Day' movies.txt -> word Day case sensitive, no matter the possition
+
+# grep -i 'day' movies.txt -> ignore case
+
+# grep -in 'day' movies.txt -> same, but show the matching lines number
+
+# grep -n '^H' movies.txt -> movies that actually start with H (line start)
+
+# grep -ni '\<h' movies.txt -> movies that have an h at start of any of its words
+
+# grep -n 'r$' movies.txt -> movies that end with r
+
+# grep '.ee' movies.txt -> movies that have any letter + ee as content in any position
+
+# grep -c 'S' movies.txt -> matching lines count (different that word count)
+
+# grep 'S' movies.txt | wc -l (notice that this is the same of above, but it is incorrect)
+
+# grep -o 'S' movies.txt -> prints matching words in different lines (now we can count the actual words)
+
+# grep -o 'S' movies.txt | wc -l -> These are the actual amount of words that start with S (number should be higher than grep -c)
+
+# grep '^[A,W,S]' movies.txt | sort -> Movies that start with A, W or S in ascending order.
+
+# grep -E '^A|W|S' movies.txt | sort -> Same as above but with egrep, without -E '|' get's detected as a character, not as an operand
+
+# grep '^A\|W\|S' movies.txt | sort -> Sames a egrep, escaping lscharacters
+
+*****Remember that you can use grep for WHOLE directories (not the best approach, but good to scheme data to look for a file)*****
+
+# mkdir partial-movies
+
+# head -n 250 movies.txt >> partial-movies/movies-1.txt -> First half of the movies in one file
+
+# tail -n 250 movies.txt >> partial-movies/movies-2.txt -> Second half of the movies in another file
+
+# cd partial-movies
+
+# cat ./* -> print all movies together
+
+# grep -n '^Z' ./*
+
+# ls -a /etc -> too many files, I want to filter this
+
+# ls -a | grep -E '.conf|.cfg' -> only the configuration files
+
+# sudo grep 'ERROR' /var/log (basic case scenario to look for issues in any log)
+
+*****After you master grep, is up to your imagination what you can do with it, it takes some time and practice..*****
+
+*****Redirection basics with everything combined*****
+
+# du -h /
+-> it will take a while, you are printing the sizes of all directories of the entire file system. This is a long process, let's put it in a file, there is some errors also, because of lack of permissions
+
+# du -h / >> /tmp/du.txt 2> /tmp/du-error.txt & 
+-> You are redirecting the standard output to du.txt, the errors (stderr) to du-error.txt, and you are running this as a background process, so you get the shell back immediately without waiting.
+
+# head /tmp/du.txt -> check the content of stdout
+
+# head /tmp/du-error.txt -> check the errors (usually, you would redirect stderr to /var/log if it's an important process)
+
+
+
+
+
+

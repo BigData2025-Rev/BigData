@@ -1,0 +1,98 @@
+1)To go to root use "cd /" command
+$ cd /
+and then type "pwd" to check / (if your in root)
+
+2)To go to home use cd or cd ~
+$ cd 
+and then type "pwd" to check /home/wterry (if your in HOME)
+
+Important Commands:
+
+remember: use mkdir --help to see usage and arguments, --help works with any command not just mkdir
+also ctrl+l clears console and "exit" exits console
+
+1)mkdir
+
+The mkdir command in Linux/Unix allows users to create or make new directories. mkdir stands for “make directory.”
+
+mkdir dir1
+mkdir {test1,test2,test3}
+mkdir –p Linux/dirtest1/dirtest2
+
+2)rmdir and rm
+
+The command-line utility for deleting empty directories. It is useful when you want to delete a directory only if it is empty, without needing to check whether the directory is empty or not.
+
+rmdir dir1  ->only empty dir
+rm -r dir1   ->dir with contents
+rm -r dir1 dir2 dir3 ->all listed directory will be deleted
+
+try:
+rm -r Linux
+
+this removes all of subdirectories created above
+
+3) cp 
+
+a) Two file names : If the command contains two file names, then it copy the contents of 1st file to the 2nd file. If the 2nd file doesn’t exist, then first it creates one and content is copied to it. But if it existed then it is simply overwritten without any warning. So be careful when you choose destination file name.
+
+cp Src_file Dest_file
+
+4) cd
+
+Change directory
+
+cd -> defaults to value of HOME shell variable
+cd / -> go to root
+cd .. -> '..' is processed by removing the immediately previous pathname component
+
+5) ls 
+
+for listing the data in the folders
+
+ls -> list down
+ls -t -> sort by modification time
+ls -1 -> Display One File Per Line 
+ls -l -> Display All Information About Files/Directories 
+ls -lt -> Order Files Based on Last Modified Time
+ls -ltr-> Order Files Based on Last Modified Time (In Reverse Order)
+
+
+6) cat
+
+Cat(concatenate) command is very frequently used in Linux. It reads data from the file and gives their content as output. It helps us to create, view, concatenate files. So let us see some frequently used cat commands. 
+
+$cat filename -> To view a single file 
+
+$cat file1 file2 -> To view multiple files 
+
+$ cat >newfile -> Will create a file named newfile
+
+
+7)grep
+
+Grep is a Linux / Unix command-line tool used to search for a string of characters in a specified file. The text search pattern is called a regular expression. When it finds a match, it prints the line with the result. The grep command is handy when searching through large log files.
+
+a)$ grep "literal_string" filename.
+
+b)$ grep "this" demo_file
+
+c)$ history | grep dnf
+
+
+8)echo
+
+echo command in linux is used to display line of text/string that are passed as an argument . This is a built in command that is mostly used in shell scripts and batch files to output status text to the screen or a file.
+
+echo -e "Geeks \bfor \bGeeks"
+
+echo -e "Geeks \cfor Geeks"
+
+echo -e "Geeks \nfor \nGeeks"
+
+echo -e "Geeks \tfor \tGeeks"
+
+echo -e "Geeks \rfor Geeks"
+
+echo -e "Geeks \vfor \vGeeks
+

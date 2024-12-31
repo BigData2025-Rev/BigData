@@ -1,0 +1,48 @@
+# top -> display all running processes live
+
+> q -> to quit this view
+
+# lscpu -> all information about the CPU (note the architecture, Byte Order, Hypervisor)
+!! Investigate 
+
+# chrt -m -> List types of priorites in this system plus the range numbers
+
+# mkdir ~/Empty -> Create an empty directory
+
+-> Create an infinite process (We are ls an empty directory, we won't fill out the drive if we forget to kill this process)
+-> An infinite process, is also known as Daemon
+# while : ; do ls ~/Empty ; done > ls.txt &
+
+# top -> track the Daemon, the owner should be yourself, and the process is *bash* [get the ID]
+
+# chrt -r -p 51 PID -> Use the process ID gathered before, changing priority type to round Robin with 51
+-> Look how this slows down our shell (do arrow keys up), since the process is almost always running now.
+-> This is because the OS want's to get rid of this process first since is longer
+
+# top -> Always at the top now, keep an eye con CPU usage
+
+# chrt -o -p 0 PID -> Bring him back to normal
+
+# kill -9 PID -> Forcefully kill this process
+
+# crontab -l -> Should be empty, let's automate a simple process
+
+# crontab -e -> Brings vim in
+
+> * * * * * echo Welcome to the Cron >> ~/crontab.txt
+
+> esc
+
+> :x!
+
+--> Every minute now, we will add a new line to crontab.txt, keep an eye on your home directory until the file appears.
+--> When you learn scripting, this could be a script that performs a complex process and you could do it in any schedule, following the cron expressions.
+
+
+
+
+
+
+
+
+
