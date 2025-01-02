@@ -1,0 +1,580 @@
+Developing Hadoop Mapreduce Application within Intellij IDEA on Windows 10:
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Environmental requirements
+- JDK 1.8
+- Intellij
+- No need to install any mode of Hadoop.
+
+---------------------
+//To change the 'Target bytecode versiont'
+File > Settings > Build, Execution, Deployment > Compiler > Java Compiler
+
+//To change the Java SDK:
+Project Structure > Project
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Mapreduce Program 1: WordCount
+--------------------
+
+//Data Source:
+Can type any data in the input file for the word count
+
+//Code Link:
+https://titanwolf.org/Network/Articles/Article?AID=d758e928-fbb1-4dcf-9d88-d573437672b4#gsc.tab=0
+
+//supporting link:
+https://medium.com/analytics-vidhya/testing-your-hadoop-program-with-maven-on-intellij-42d534db7974
+
+STEPS:
+// java class: WordCount
+
+// New Project:
+File->New->Project
+
+select in the pop-up dialog box Maven, JDK select 1.8 (WSL), click Next
+
+Fill:
+GroupId = com.revature
+ArtifactId = hadoop
+Name = WordCount
+
+click Finish
+
+// Open Intellij's Preference 
+File > Settings > Build, Execution, Deployment > Compiler > Java Compiler
+
+Change WordCount 'Target bytecode version' = 8 (if already 8, then skip the step)
+
+// Configuration dependencies
+Project > WordCount > pom.xml  (configuration of Maven)
+double click to edit pom.xml
+----------------------------
+<repositories> 
+<repository> 
+<id>apache</id> 
+<url>http://maven.apache.org</url> 
+</repository> 
+</repositories> 
+
+
+// Add dependency:
+<dependencies> 
+<dependency> 
+<groupId>org.apache.hadoop</groupId> 
+<artifactId>hadoop-core</artifactId> 
+<version>1.2.1</version> 
+</dependency> 
+<dependency> 
+<groupId>org.apache.hadoop</groupId> 
+<artifactId>hadoop-common</artifactId> 
+<version>2.7.2</version> 
+</dependency> 
+</dependencies> 
+
+
+//Update dependencies in Maven:
+Right Click inside pom.xml > Maven > Reload project
+
+// Create a WordCount class:
+src -> main -> java -> Create a new Java Class (WordCount)
+
+// Add below Code in the Java Class:
+---------------------------------------------------------------------------------------------------------------
+import java.io.IOException;
+import java.util.StringTokenizer;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WordCount {
+
+    public static class TokenizerMapper
+            extends Mapper<Object, Text, Text, IntWritable>{
+
+        private final static IntWritable one = new IntWritable(1);
+        private Text word = new Text();
+
+        public void map(Object key, Text value, Context context
+        ) throws IOException, InterruptedException {
+            StringTokenizer itr = new StringTokenizer(value.toString());
+            while (itr.hasMoreTokens()) {
+                word.set(itr.nextToken());
+                context.write(word, one);
+            }
+        }
+    }
+
+    public static class IntSumReducer
+            extends Reducer<Text,IntWritable,Text,IntWritable> {
+        private IntWritable result = new IntWritable();
+
+        public void reduce(Text key, Iterable<IntWritable> values,
+                           Context context
+        ) throws IOException, InterruptedException {
+            int sum = 0;
+            for (IntWritable val : values) {
+                sum += val.get();
+            }
+            result.set(sum);
+            context.write(key, result);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "word count");
+        job.setJarByClass(WordCount.class);
+        job.setMapperClass(TokenizerMapper.class);
+        job.setCombinerClass(IntSumReducer.class);
+        job.setReducerClass(IntSumReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
+}
+----------------------------------------------------------------------------------------------------------------------
+
+// Configure input folder
+Project > WordCount > Create New Directory (input)
+
+// Configure input file/s
+Project > WordCount > input > Create New txt file (SampleFile.txt)
+
+
+// Type any required data inside SampleFile.txt
+Rev
+Rev
+Rev
+Pro
+Pro
+Pro
+Pro
+MST
+MST
+
+
+// Project SDK:
+File -> Project Structure > select Project > Project SDK: > select '11 (3) version 11.0.6 [this version of java was installed in system, during installation of single node cluster / spark installation]
+
+
+// Platfrom Settings:
+File -> Project Structure > Platfrom Settings > SDKs > select 1.8 (WSL) [from the list of 1.8 (wsl), 11, 11 (2), 11(3), 16]
+
+
+//
+File -> Project Structure > select Modules > click the Sources tab (it will be Language level adjusted to 7 or 8)
+(If you use version control)
+Click on input > then click on Excluded (to mark the folder as excluded)
+Apply
+ok
+
+
+// Configure operating parameters: configure the Main class when this program runs, and the input and output paths required by WordCount.
+
+Run -> Edit Configurations > click + or 'Add new run configurations' > Application
+
+Name = WordCount
+Main class = WordCount
+Program arguments = input/ output/
+Java = select = java 8 1.8 (WSL)
+
+
+// Operation and commissioning
+// Run
+Run -> Run 'WordCount'
+
+// to start running the MapReduce program
+// output of Hadoop will be displayed below Intellij
+// After the program finishes running, a new folder (output) will appear in the upper left of Intellij
+
+// Check result
+output > part-r-00000 (double click the file to see the result!)
+
+// ** Note: Due to the Hadoop settings, be sure to delete the output folder the next time you run it ! //
+
+
+
+--------------------
+//Debugging:
+//Debugging breakpoints is also very easy. 
+Click and add a breakpoint before the code that needs to be set. 
+Click the menu bar- Run->Debug 'WordCount'to start debugging
+// and the program will stop at the breakpoint.
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Mapreduce Program 2: weather-data-analysis-for-analyzing-hot-and-cold-days
+--------------------
+
+//Data Source:
+https://www.ncei.noaa.gov/pub/data/uscrn/products/monthly01/CRNM0102-AK_Fairbanks_11_NE.txt
+
+//Code Link:
+https://www.geeksforgeeks.org/mapreduce-program-weather-data-analysis-for-analyzing-hot-and-cold-days/
+
+//The above link is used for the a. location to download the dataset.  b. for the mapreduce code
+
+STEPS:
+// java class: MyMaxMin
+
+// New Project:
+File->New->Project
+
+select in the pop-up dialog box Maven, JDK select 1.8 (WSL), click Next
+
+Fill:
+GroupId = com.revature
+ArtifactId = hadoop
+Name = MyMaxMin
+
+click Finish
+
+// Open Intellij's Preference 
+File > Settings > Build, Execution, Deployment > Compiler > Java Compiler
+
+Change MyMaxMin 'Target bytecode version' = 8 (if already 8, then skip the step)
+
+
+// Configuration dependencies
+Project > MyMaxMin > pom.xml  (configuration of Maven)
+double click to edit pom.xml
+//Add the below code in the tail [before </project>]
+----------------------------
+<repositories> 
+<repository> 
+<id>apache</id> 
+<url>http://maven.apache.org</url> 
+</repository> 
+</repositories> 
+
+// Add dependency
+<dependencies> 
+<dependency> 
+<groupId>org.apache.hadoop</groupId> 
+<artifactId>hadoop-core</artifactId> 
+<version>1.2.1</version> 
+</dependency> 
+<dependency> 
+<groupId>org.apache.hadoop</groupId> 
+<artifactId>hadoop-common</artifactId> 
+<version>2.7.2</version> 
+</dependency> 
+</dependencies> 
+
+
+//Update dependencies in Maven
+Right Click inside pom.xml > Maven > Reload project
+
+
+// Create a MyMaxMin class
+src -> main -> java -> Create a new Java Class (MyMaxMin)
+
+
+// Add below Code in the Java Class:
+---------------------------------------------------------------------------------------------------------------------
+// importing Libraries
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.conf.Configuration;
+
+public class MyMaxMin {
+
+	
+	// Mapper
+	
+	/*MaxTemperatureMapper class is static
+	* and extends Mapper abstract class
+	* having four Hadoop generics type
+	* LongWritable, Text, Text, Text.
+	*/
+	
+	
+	public static class MaxTemperatureMapper extends
+			Mapper<LongWritable, Text, Text, Text> {
+		
+		/**
+		* @method map
+		* This method takes the input as a text data type.
+		* Now leaving the first five tokens, it takes
+		* 6th token is taken as temp_max and
+		* 7th token is taken as temp_min. Now
+		* temp_max > 30 and temp_min < 15 are
+		* passed to the reducer.
+		*/
+
+	// the data in our data set with
+	// this value is inconsistent data
+	public static final int MISSING = 9999;
+		
+	@Override
+		public void map(LongWritable arg0, Text Value, Context context)
+				throws IOException, InterruptedException {
+
+		// Convert the single row(Record) to
+		// String and store it in String
+		// variable name line
+			
+		String line = Value.toString();
+			
+			// Check for the empty line
+			if (!(line.length() == 0)) {
+				
+				// from character 6 to 14 we have
+				// the date in our dataset
+				String date = line.substring(6, 14);
+
+				// similarly we have taken the maximum
+				// temperature from 39 to 45 characters
+				float temp_Max = Float.parseFloat(line.substring(39, 45).trim());
+				
+				// similarly we have taken the minimum
+				// temperature from 47 to 53 characters
+				
+				float temp_Min = Float.parseFloat(line.substring(47, 53).trim());
+
+				// if maximum temperature is
+				// greater than 30, it is a hot day
+				if (temp_Max > 30.0) {
+					
+					// Hot day
+					context.write(new Text("The Day is Hot Day :" + date),
+										new Text(String.valueOf(temp_Max)));
+				}
+
+				// if the minimum temperature is
+				// less than 15, it is a cold day
+				if (temp_Min < 15) {
+					
+					// Cold day
+					context.write(new Text("The Day is Cold Day :" + date),
+							new Text(String.valueOf(temp_Min)));
+				}
+			}
+		}
+
+	}
+
+// Reducer
+	
+	/*MaxTemperatureReducer class is static
+	and extends Reducer abstract class
+	having four Hadoop generics type
+	Text, Text, Text, Text.
+	*/
+	
+	public static class MaxTemperatureReducer extends
+			Reducer<Text, Text, Text, Text> {
+
+		/**
+		* @method reduce
+		* This method takes the input as key and
+		* list of values pair from the mapper,
+		* it does aggregation based on keys and
+		* produces the final context.
+		*/
+		
+		public void reduce(Text Key, Iterator<Text> Values, Context context)
+				throws IOException, InterruptedException {
+
+			
+			// putting all the values in
+			// temperature variable of type String
+			String temperature = Values.next().toString();
+			context.write(Key, new Text(temperature));
+		}
+
+	}
+
+
+
+	/**
+	* @method main
+	* This method is used for setting
+	* all the configuration properties.
+	* It acts as a driver for map-reduce
+	* code.
+	*/
+	
+	public static void main(String[] args) throws Exception {
+
+		// reads the default configuration of the
+		// cluster from the configuration XML files
+		Configuration conf = new Configuration();
+		
+		// Initializing the job with the
+		// default configuration of the cluster	
+		Job job = new Job(conf, "weather example");
+		
+		// Assigning the driver class name
+		job.setJarByClass(MyMaxMin.class);
+
+		// Key type coming out of mapper
+		job.setMapOutputKeyClass(Text.class);
+		
+		// value type coming out of mapper
+		job.setMapOutputValueClass(Text.class);
+
+		// Defining the mapper class name
+		job.setMapperClass(MaxTemperatureMapper.class);
+		
+		// Defining the reducer class name
+		job.setReducerClass(MaxTemperatureReducer.class);
+
+		// Defining input Format class which is
+		// responsible to parse the dataset
+		// into a key value pair
+		job.setInputFormatClass(TextInputFormat.class);
+		
+		// Defining output Format class which is
+		// responsible to parse the dataset
+		// into a key value pair
+		job.setOutputFormatClass(TextOutputFormat.class);
+
+		// setting the second argument
+		// as a path in a path variable
+		Path OutputPath = new Path(args[1]);
+
+		// Configuring the input path
+		// from the filesystem into the job
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+
+		// Configuring the output path from
+		// the filesystem into the job
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+		// deleting the context path automatically
+		// from hdfs so that we don't have
+		// to delete it explicitly
+		OutputPath.getFileSystem(conf).delete(OutputPath);
+
+		// exiting the job only if the
+		// flag value becomes false
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
+
+	}
+}
+-----------------------------------------------------------------------------------------------------------------
+
+
+// Configure input folder
+Project > MyMaxMin > Create New Directory (input)
+
+// Configure input file/s
+Project > MyMaxMin > input > Create New txt file (weather_data.txt)
+
+
+// Copy and paste the data from file 'CRNM0102-AK_Fairbanks_11_NE' inside weather_data.txt
+
+
+// Project SDK:
+File -> Project Structure > select Project > Project SDK: > select '11 (3) version 11.0.6 [this version of java was installed in system, during installation of single node cluster / spark installation]
+
+
+// Platfrom Settings:
+File -> Project Structure > Platfrom Settings > SDKs > select 1.8 (WSL) [from the list of 1.8 (wsl), 11, 11 (2), 11(3), 16]
+
+
+//
+File -> Project Structure > select Modules > click the Sources tab (it will be Language level adjusted to 7 or 8)
+(If you use version control)
+Click on input > then click on Excluded (to mark the folder as excluded)
+Apply
+ok
+
+
+// Configure operating parameters: configure the Main class when this program runs, and the input and output paths required by MyMaxMin.
+
+Run -> Edit Configurations > click + or 'Add new run configurations' > Application
+
+Name = MyMaxMin
+Main class = MyMaxMin
+Program arguments = input/ output/
+Java = select = java 8 1.8 (WSL)
+
+
+// Operation and commissioning
+// Run
+Run -> Run 'MyMaxMin'
+
+// to start running the MapReduce program
+// output of Hadoop will be displayed below Intellij
+// After the program finishes running, a new folder (output) will appear in the upper left of Intellij
+
+// Check result
+output > part-r-00000 (double click the file to see the result!)
+
+// ** Note: Due to the Hadoop settings, be sure to delete the output folder the next time you run it ! //
+
+
+
+--------------------
+//Debugging:
+//Debugging breakpoints is also very easy. 
+Click and add a breakpoint before the code that needs to be set. 
+Click the menu bar- Run->Debug 'MyMaxMin'to start debugging
+// and the program will stop at the breakpoint.
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Other Reference Links: Not used in the project
+
+https://bigdataproblog.wordpress.com/2016/05/20/developing-hadoop-mapreduce-application-within-intellij-idea-on-windows-10/
+
+https://medium.com/analytics-vidhya/testing-your-hadoop-program-with-maven-on-intellij-42d534db7974
+
+https://bigdataproblog.wordpress.com/2016/05/20/developing-hadoop-mapreduce-application-within-intellij-idea-on-windows-10/
+
+// https://kontext.tech/column/hadoop/447/install-hadoop-330-on-windows-10-step-by-step-guide
+// https://towardsdatascience.com/installing-hadoop-3-2-1-single-node-cluster-on-windows-10-ac258dd48aef
+
+Other Links: 
+// Debugging Map reduce program using IntelliJ
+https://www.youtube.com/watch?v=WdIiTgYI5QI
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+https://titanwolf.org/Network/Articles/Article?AID=d758e928-fbb1-4dcf-9d88-d573437672b4#gsc.tab=0
+
+
+https://www.fatalerrors.org/a/mapreduce-programming-intellij-idea-configure-mapreduce-programming-environment.html
+
+
+https://stackoverflow.com/questions/60277830/package-org-apache-hadoop-does-not-exist
+
+
+https://stackoverflow.com/questions/1051640/correct-way-to-add-external-jars-lib-jar-to-an-intellij-idea-project
+
+https://kontext.tech/column/hadoop/447/install-hadoop-330-on-windows-10-step-by-step-guide
+
+https://towardsdatascience.com/installing-hadoop-3-2-1-single-node-cluster-on-windows-10-ac258dd48aef
+
+https://www.youtube.com/watch?v=Bm0BKH_vFT8
+
+https://github.com/autopear/Intellij-Hadoop#:~:text=In%20Intellij%2C%20Create%20New%20Project,and%20Project%20location%20%2C%20then%20Finish%20.
+
+https://medium.com/analytics-vidhya/testing-your-hadoop-program-with-maven-on-intellij-42d534db7974
+

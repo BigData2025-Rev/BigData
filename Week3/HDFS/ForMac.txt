@@ -1,0 +1,11 @@
+// install hadoop on Mac
+
+https://medium.com/@hannahstrakna/installing-hadoop-with-hive-on-macos-catalina-using-homebrew-b4d384d455e4
+
+and
+
+https://medium.com/@vikramus4/install-and-configure-hadoop-3-3-6-in-mac-os-dd4be4da8846
+
+
+
+https://techblost.com/how-to-install-hadoop-on-mac-with-homebrew/

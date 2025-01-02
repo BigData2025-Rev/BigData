@@ -1,0 +1,282 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Mapreduce Job: READYMADE
+------------------------
+https://github.com/samujjwaal/dblp-mapreduce
+
+// https://tecadmin.net/hadoop-running-a-wordcount-mapreduce-example/
+//Now create a directory in hadoop filesystem.
+hdfs dfs -mkdir -p /user/maria/wordcount1
+
+//copy some text file to hadoop filesystem inside wordcount1 directory. Here we are copying LICENSE.txt to it. 
+hdfs dfs -put LICENSE.txt /user/maria/wordcount1/
+
+// Running Wordcount Command
+//Below command will read all files from wordcount1 folder and process with mapreduce jar file. After successful completion of task results will be placed on output directory.
+
+hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0.jar wordcount wordcount1 output
+
+//In the above command (mapreduce-examples-3.3.0.jar -- is based on the hadoop version, for different hadoop versions it will be different. It can be tracked/traced with the method given in below next section
+
+// Show Results
+// First check the names of result file created under dfs@/user/maria/output filesystem using following command.
+hdfs dfs -ls /user/maria/output
+
+//Now show the content of result file where you will see the result of wordcount. You will see the count of each word.
+hdfs dfs -cat /user/maria/output/part-r-00000
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Mapreduce Job: from Scratch
+---------------------------
+Q. How to write a Mapreduce program and execute it as a jar file in Hadoop
+Solution: 
+https://www.youtube.com/watch?v=6sK3LDY7Pp4
+
+https://medium.com/edureka/mapreduce-tutorial-3d9535ddbe7c
+
+
+// to make sure Hadoop is installed and running
+hadoop version
+
+// Make sure javac is running correctly
+javac -version
+
+// create a folder in - /home/maria
+
+// check for pwd (present working directory)
+pwd
+
+Result: /home/maria
+
+
+// Create a folder 'WordCountTutorial' in the pwd
+mkdir WordCountTutorial
+
+// Get into the WordCountTutorial folder
+cd WordCountTutorial
+
+// Create a file 'WordCount.java' which has the code for Mapreduce wordcount.
+vi WordCount.java
+
+// Paste the below wordcount code in the above file
+----------------------------------------------------------------------------------------------
+import java.io.IOException;
+import java.util.StringTokenizer;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WordCount {
+
+  public static class TokenizerMapper
+       extends Mapper<Object, Text, Text, IntWritable>{
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      StringTokenizer itr = new StringTokenizer(value.toString());
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, one);
+      }
+    }
+  }
+
+  public static class IntSumReducer
+       extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable<IntWritable> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;
+      for (IntWritable val : values) {
+        sum += val.get();
+      }
+      result.set(sum);
+      context.write(key, result);
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf, "word count");
+    job.setJarByClass(WordCount.class);
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
+}
+------------------------------------------------------------------------------------------------------------------
+
+// Create a folder for Input data inside the WordCountTutorial folder
+mkdir input_data
+
+
+(maria@DFLY36P2:~/WordCountTutorial$ mkdir input_data mkdir input_data)
+
+// Get into the input_data folder
+cd input_data
+
+(maria@DFLY36P2:~/WordCountTutorial$ cd input_data)
+
+// Create a text file 'input.txt' which has the data for the Mapreduce wordcount.
+vi input.txt
+
+(maria@DFLY36P2:~/WordCountTutorial/input_data$ vi input.txt)
+
+// Paste the below data the above input text file
+---------------------------------------------------------------------------------------------------------------------
+hadoop
+hadoop
+linux
+student
+student
+student
+elephant
+elephant
+ubuntu
+ubuntu
+ubuntu
+ubuntu
+----------------------------------------------------------------------------------------------------------------------
+
+// Create a folder to hold the java class file inside the WordCountTutorial folder
+mkdir tutorial_classes
+
+(maria@DFLY36P2:~/WordCountTutorial/input_data$ cd ..)
+(maria@DFLY36P2:~/WordCountTutorial$ mkdir tutorial_classes)
+
+
+// set the HADOOP_CLASSPATH environment variable
+export HADOOP_CLASSPATH=$(hadoop classpath)
+
+(maria@DFLY36P2:~/WordCountTutorial/tutorial_classes$ cd)
+[maria@DFLY36P2:~$ export HADOOP_CLASSPATH=$(hadoop classpath)]
+
+
+// Make sure it has been set correctly
+echo $HADOOP_CLASSPATH
+
+(maria@DFLY36P2:~$ echo $HADOOP_CLASSPATH)
+
+// Result:
+/home/maria/hadoop/hadoop-3.3.0/etc/hadoop:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/common/lib/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/common/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/hdfs:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/hdfs/lib/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/hdfs/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/mapreduce/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/yarn:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/yarn/lib/*:/home/maria/hadoop/hadoop-3.3.0/share/hadoop/yarn/*:/usr/lib/jvm/java-1.8.0-openjdk-amd64/lib/tools.jar
+
+
+// Create a directory on HDFS
+hadoop dfs -mkdir /WordCountTutorial
+
+(maria@DFLY36P2:~$ hadoop dfs -mkdir /WordCountTutorial)
+
+
+
+// Create a directory inside the above directory for input
+hadoop dfs -mkdir /WordCountTutorial/Input
+
+(maria@DFLY36P2:~$ hadoop dfs -mkdir /WordCountTutorial/Input)
+
+
+// Check it by going to http://localhost:9870/ in a browser (Since Hadoop 3.0.0 - Alpha 1 there was a Change in the port configuration:from 50070 to 9870)
+http://localhost:9870/ 
+Utilities > Browse the file system
+//The WordCountTutorial folder and Input folder inside it will be seen in the above location
+
+
+
+// Upload the input file to the above folder/directory
+hadoop dfs -put '/home/maria/WordCountTutorial/input_data/input.txt' /WordCountTutorial/Input
+
+(maria@DFLY36P2:~$ hadoop dfs -put '/home/maria/WordCountTutorial/input_data/input.txt' /WordCountTutorial/Input)
+
+
+//Check It
+http://localhost:9870/ 
+Utilities > Browse the file system > WordCountTutorial > Input > input.txt
+//the input.txt file will now be seen in the Input folder in the above location
+
+
+
+// Change the current directory to the tutorial directory
+cd /home/maria/WordCountTutorial/
+
+(maria@DFLY36P2:~$ cd /home/maria/WordCountTutorial/)
+(maria@DFLY36P2:~/WordCountTutorial$ clear)
+
+
+// Compile the java code
+javac -classpath ${HADOOP_CLASSPATH} -d '/home/maria/WordCountTutorial/tutorial_classes' '/home/maria/WordCountTutorial/WordCount.java'
+
+(maria@DFLY36P2:~/WordCountTutorial$ javac -classpath ${HADOOP_CLASSPATH} -d '/home/maria/WordCountTutorial/tutorial_classes' '/home/maria/WordCountTutorial/WordCount.java')
+
+
+// Check the files
+cd tutorial_classes
+//(maria@DFLY36P2:~/WordCountTutorial$ cd tutorial_classes)
+ls
+//(maria@DFLY36P2:~/WordCountTutorial/tutorial_classes$ ls)
+
+Result: The following files should be see/present
+'WordCount$IntSumReducer.class'  'WordCount$TokenizerMapper.class'   WordCount.class
+
+
+// Put the output files in one jar file
+cd ..
+//(maria@DFLY36P2:~/WordCountTutorial/tutorial_classes$ cd ..)
+
+jar -cvf firstTutorial.jar -C tutorial_classes/ .
+//(maria@DFLY36P2:~/WordCountTutorial$ jar -cvf firstTutorial.jar -C tutorial_classes/ .)
+
+Result:
+added manifest
+adding: WordCount.class(in = 1491) (out= 814)(deflated 45%)
+adding: WordCount$TokenizerMapper.class(in = 1736) (out= 755)(deflated 56%)
+adding: WordCount$IntSumReducer.class(in = 1739) (out= 741)(deflated 57%)
+
+
+// Check the file 'firstTutorial.jar' is created/present in the WordCountTutorial folder
+ls
+//(maria@DFLY36P2:~/WordCountTutorial$ ls)
+
+Result: The following files should be see/present
+WordCount.java  firstTutorial.jar  input_data  tutorial_classes
+
+
+// Now run the jar file on Hadoop (WordCount = Public Class name from the WordCount code above)
+hadoop jar '/home/maria/WordCountTutorial/firstTutorial.jar' WordCount /WordCountTutorial/Input /WordCountTutorial/Output
+
+(maria@DFLY36P2:~/WordCountTutorial$ hadoop jar '/home/maria/WordCountTutorial/firstTutorial.jar' WordCount /WordCountTutorial/Input /WordCountTutorial/Output)
+
+
+// Verify that it shows Completed Successfully after running the above command (run the jar file on Hadoop)
+
+Result: (2021-04-20 00:30:22,588 INFO mapreduce.Job: Job job_1618726573148_0003 completed successfully)
+
+
+// Output of WordCount Program:
+hadoop dfs -cat /WordCountTutorial/Output/* 
+
+(maria@DFLY36P2:~/WordCountTutorial$ hadoop dfs -cat /WordCountTutorial/Output/*)
+
+Result:
+elephant        2
+hadoop  2
+linux   1
+student 3
+ubuntu  4
+
+
+-----------END of Mapreduce----WordCount Program---------
