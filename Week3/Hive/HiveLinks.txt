@@ -1,0 +1,5 @@
+https://cwiki.apache.org/confluence/display/Hive/LanguageManual
+
+https://cwiki.apache.org/confluence/display/Hive/Tutorial
+
+https://hive.apache.org/
