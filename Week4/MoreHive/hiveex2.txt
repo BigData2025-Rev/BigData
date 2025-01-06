@@ -1,0 +1,59 @@
+SET hive.support.concurrency=true;
+SET hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+SET hive.enforce.bucketing=true;
+SET hive.exec.dynamic.partition.mode=nostrict;
+
+use testdb;
+create table Drivers2Test(txno INT,txnlocation STRING,custno INT,amount STRING,category STRING,Time_01 STRING)row format delimited fields terminated by ',' stored as ORC;
+
+ALTER TABLE Drivers2Test SET TBLPROPERTIES ('transactional'='true');
+
+ALTER TABLE Drivers2Test ADD COLUMNS (Emp_dept STRING,Emp_address STRING) ;
+
+INSERT INTO TABLE Drivers2Test(SELECT * FROM VeryNewTable);
+
+UPDATE Drivers2Test SET emp_dept="accounting" WHERE txnlocation="Austin";
+
+
+SELECT * FROM Drivers1Test;
+
+describe Drivers1Test;
+
+LOAD DATA INPATH '/user/hive/warehouse/Drivers.csv' OVERWRITE INTO TABLE Drivers1Test;
+
+create external table data3(txno INT,txnlocation STRING,custno INT,amount STRING,category STRING,Time_01 STRING)row format delimited fields terminated by ',' LOCATION '/user/external2';
+
+from dat insert overwrite table data3 select dat.txno,dat.txnlocation,dat.custno,dat.amount,dat.category,dat.Time_01;
+
+select * from data3;
+
+Create VIEW Sample_View AS SELECT * FROM data3 WHERE data3.amount>200000;
+
+DROP VIEW Sample_View;
+
+
+
+create table Customers1T(IDc INT,Name STRING,Age INT,Address STRING, Salary DOUBLE)row format delimited fields terminated by ',' stored as textfile;
+
+LOAD DATA INPATH '/user/hive/warehouse/CustomersTable.txt' OVERWRITE INTO TABLE Customers1T;
+
+create table Orders1T(OID INT,Date1 TIMESTAMP,Customer_ID INT,Amount INT)row format delimited fields terminated by ',' stored as textfile;
+
+LOAD DATA INPATH '/user/hive/warehouse/OrdersTable.txt' OVERWRITE INTO TABLE Orders1T;
+
+describe Customers1T;
+describe Orders1T;
+
+SELECT c.IDc, c.NAME, c.AGE, o.amount FROM Customers1T c JOIN Orders1T o ON (c.IDc = o.CUSTOMER_ID);
+
+SELECT c.IDc, c.NAME, o.AMOUNT, o.DATE1 
+FROM CUSTOMERS1t c 
+LEFT OUTER JOIN ORDERS1t o 
+ON (c.IDc = o.CUSTOMER_ID);
+
+SELECT c.IDc, c.NAME, o.AMOUNT, o.DATE1 FROM CUSTOMERS1t c RIGHT OUTER JOIN ORDERS1t o ON (c.IDc = o.CUSTOMER_ID);
+
+SELECT c.IDc, c.NAME, o.AMOUNT, o.DATE1 FROM CUSTOMERS1t c RIGHT JOIN ORDERS1t o ON (c.IDc = o.CUSTOMER_ID);
+
+
+

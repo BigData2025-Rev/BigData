@@ -1,0 +1,59 @@
+DDL Commands in Hive
+
+CREATE	 ->Database,Table
+DROP	 ->Database,Table
+TRUNCATE ->Table
+ALTER     ->Database,Table
+SHOW      ->Database,Table
+DESCRIBE  ->Properties,Partitions,Functions,IndexDatabase, Table,View
+
+create database willdb;
+
+show databases;
+
+use willdb;
+
+create table data1(txno INT,txnlocation STRING,custno INT,amount STRING,category STRING,Time_01 STRING)row format delimited fields terminated by ',' stored as textfile;
+
+show tables;
+
+describe data1;
+
+LOAD DATA INPATH '/user/hive/warehouse/drivers.txt' OVERWRITE INTO TABLE data1;
+
+select * from data1;
+
+select count(*) from data1;
+
+
+hdfs dfs -ls /user/hive/warehouse
+
+Alter command
+
+alter table data1 rename to new_data1;
+ALTER TABLE data1 ADD COLUMNS (Emp_dept STRING,Emp_address STRING) ;
+
+
+
+You can add additional table properties or modify existing properties, but not remove them
+
+The TBLPROPERTIES clause allows you to tag the table definition with your own metadata key/value pairs. Some predefined table properties also exist, such as last_modified_user and last_modified_time which are automatically added and managed by Hive. Other predefined table properties include:
+
+TBLPROPERTIES ("comment"="table_comment")
+TBLPROPERTIES ("hbase.table.name"="table_name") – see HBase Integration.
+TBLPROPERTIES ("immutable"="true") or ("immutable"="false") in release 0.13.0+ (HIVE-6406) – see Inserting Data into Hive Tables from Queries.
+TBLPROPERTIES ("orc.compress"="ZLIB") or ("orc.compress"="SNAPPY") or ("orc.compress"="NONE") and other ORC properties – see ORC Files.
+TBLPROPERTIES ("transactional"="true") or ("transactional"="false") in release 0.14.0+, the default is "false" – see Hive Transactions.
+TBLPROPERTIES ("NO_AUTO_COMPACTION"="true") or ("NO_AUTO_COMPACTION"="false"), the default is "false" – see Hive Transactions.
+TBLPROPERTIES ("auto.purge"="true") or ("auto.purge"="false") in release 1.2.0+ (HIVE-9118) – see Drop Table and Drop Partitions.
+
+SHOW TBLPROPERTIES tblname;
+
+Alter TABLE Comp_Emp Set TBLPROPERTIES('TableFor'='IT_Employee');
+ALTER TABLE data1 SET TBLPROPERTIES('notes' = 'The process id is no longer captured; this column is always NULL');
+
+
+TRUNCATE: used to truncate all the rows, which can not even be restored at all, this actions deletes data in Hive meta store. DROP: it drops the table along with the data associated with Hive Meta store.
+
+drop table tablename;
+truncate table tablename;

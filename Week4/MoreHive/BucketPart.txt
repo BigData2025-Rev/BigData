@@ -1,0 +1,15 @@
+Set hive.exec.dynamic.partition.mode=nonstrict;
+
+DROP TABLE IF EXISTS dem;
+
+create table Dem(id INT,age INT, state STRING) partitioned by (gender STRING) row format delimited fields terminated by ',' stored as textfile;
+ALTER TABLE Dem CLUSTERED BY (id) INTO 3 BUCKETS;
+
+DROP TABLE IF EXISTS demrg;
+
+create table DemRg(id INT,gender STRING,age INT, state STRING)row format delimited fields terminated by ',' stored as textfile;
+LOAD DATA INPATH '/user/hive/warehouse/Demo.txt' OVERWRITE INTO TABLE DemRg;
+
+insert overwrite table Dem partition(gender) select id,age,state,gender from DemRg;
+
+show partitions Dem;

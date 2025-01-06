@@ -1,0 +1,271 @@
+All the data types in Hive are classified into four types, given as follows:
+
+1)Column Types
+2)Literals
+3)Null Values
+4)Complex Types
+5)Column Types
+
+Column type are used as column data types of Hive. They are as follows:
+
+--->Integral Types
+Integer type data can be specified using integral data types, INT. When the data range exceeds the range of INT, you need to use BIGINT and if the data range is smaller than the INT, you use SMALLINT. TINYINT is smaller than SMALLINT.
+
+The following table depicts various INT data types:
+
+Type	      Postfix	Example
+TINYINT	        Y	10Y
+SMALLINT	S	10S
+INT	        -	10
+BIGINT	        L	10L
+
+--->String Types
+String type data types can be specified using single quotes (' ') or double quotes (" "). It contains two data types: VARCHAR and CHAR. Hive follows C-types escape characters.
+
+The following table depicts various CHAR data types:
+
+DataType	Length
+VARCHAR	       1 to 65355
+CHAR	       255
+
+
+--->Timestamp
+It supports traditional UNIX timestamp with optional nanosecond precision. It supports java.sql.Timestamp format “YYYY-MM-DD HH:MM:SS.fffffffff” and format “yyyy-mm-dd hh:mm:ss.ffffffffff”.
+
+--->Dates
+DATE values are described in year/month/day format in the form {{YYYY-MM-DD}}.
+
+--->Decimals
+The DECIMAL type in Hive is as same as Big Decimal format of Java. It is used for representing immutable arbitrary precision. The syntax and example is as follows:
+
+DECIMAL(precision, scale)
+decimal(10,0)
+
+--->Union Types
+Union is a collection of heterogeneous data types. You can create an instance using create union. The syntax and example is as follows:
+
+UNIONTYPE<int, double, array<string>, struct<a:int,b:string>>
+
+{0:1} 
+{1:2.0} 
+{2:["three","four"]} 
+{3:{"a":5,"b":"five"}} 
+{2:["six","seven"]} 
+{3:{"a":8,"b":"eight"}} 
+{0:9} 
+{1:10.0}
+
+--->Literals
+The following literals are used in Hive:
+
+Floating Point Types
+Floating point types are nothing but numbers with decimal points. Generally, this type of data is composed of DOUBLE data type.
+
+Decimal Type
+Decimal type data is nothing but floating point value with higher range than DOUBLE data type. The range of decimal type is approximately -10-308 to 10308.
+
+Null Value
+Missing values are represented by the special value NULL.
+
+--->Complex Types
+The Hive complex data types are as follows:
+
+Arrays
+Arrays in Hive are used the same way they are used in Java.
+Syntax: ARRAY<data_type>
+
+Maps
+Maps in Hive are similar to Java Maps.
+Syntax: MAP<primitive_type, data_type>
+
+Structs
+Structs in Hive is similar to using complex data with comment.
+Syntax: STRUCT<col_name : data_type [COMMENT col_comment], ...>
+
+
+
+External Tables Vs Managed tables
+
+create external table data2(txno INT, txnlocation STRING, custno INT) row format delimited fields terminated by ',' stored as textfile  LOCATION '/user/will';
+
+from data1 dat insert overwrite table data2 select dat.txno,dat.txnlocation,dat.custno;
+
+create external table dataAds(TV STRING, RADIO STRING, NEWSPAPER STRING, SALES STRING) row format delimited fields terminated by ',' stored as textfile  LOCATION '/user/will/ads';
+
+
+
+or load command
+
+create external table if not exists [external-table-name] (
+[column1-name] [column1-type], [column2-name] [column2-type], …)
+comment '[comment]'
+row format [format-type]
+fields terminated by '[termination-character]'
+stored as [storage-type]
+location '[location]';
+
+https://phoenixnap.com/kb/hive-create-external-table
+
+View
+
+Views are similar to tables, which are generated based on the requirements.
+
+We can save any result set data as a view in Hive
+
+Usage is similar to as views used in SQL
+
+All type of DML operations can be performed on a view
+
+Syntax:
+
+Create VIEW <VIEWNAME> AS SELECT
+Example:
+
+Hive>Create VIEW Sample_ViewAS SELECT * FROM employees WHERE salary>25000
+
+
+
+What is Index?
+
+Indexes are pointers to particular column name of a table.
+
+The user has to manually define the index
+Wherever we are creating index, it means that we are creating pointer to particular column name of table
+Any Changes made to the column present in tables are stored using the index value created on the column name.
+Syntax:
+
+Create INDEX <INDEX_NAME> ON TABLE < TABLE_NAME(column names)>
+Example:
+
+Create INDEX sample_Index ON TABLE guruhive_internaltable(id)
+
+Here we are creating index on table guruhive_internaltable for column name id.
+
+JOIN is a clause that is used for combining specific fields from two tables by using values common to each one. It is used to combine records from two or more tables in the database.
+
+Syntax
+join_table:
+
+   table_reference JOIN table_factor [join_condition]
+   | table_reference {LEFT|RIGHT|FULL} [OUTER] JOIN table_reference
+   join_condition
+   | table_reference LEFT SEMI JOIN table_reference join_condition
+   | table_reference CROSS JOIN table_reference [join_condition]
+Example
+We will use the following two tables in this chapter. Consider the following table named CUSTOMERS..
+
++----+----------+-----+-----------+----------+ 
+| ID | NAME     | AGE | ADDRESS   | SALARY   | 
++----+----------+-----+-----------+----------+ 
+| 1  | Ramesh   | 32  | Ahmedabad | 2000.00  |  
+| 2  | Khilan   | 25  | Delhi     | 1500.00  |  
+| 3  | kaushik  | 23  | Kota      | 2000.00  | 
+| 4  | Chaitali | 25  | Mumbai    | 6500.00  | 
+| 5  | Hardik   | 27  | Bhopal    | 8500.00  | 
+| 6  | Komal    | 22  | MP        | 4500.00  | 
+| 7  | Muffy    | 24  | Indore    | 10000.00 | 
++----+----------+-----+-----------+----------+
+Consider another table ORDERS as follows:
+
++-----+---------------------+-------------+--------+ 
+|OID  | DATE                | CUSTOMER_ID | AMOUNT | 
++-----+---------------------+-------------+--------+ 
+| 102 | 2009-10-08 00:00:00 |           3 | 3000   | 
+| 100 | 2009-10-08 00:00:00 |           3 | 1500   | 
+| 101 | 2009-11-20 00:00:00 |           2 | 1560   | 
+| 103 | 2008-05-20 00:00:00 |           4 | 2060   | 
++-----+---------------------+-------------+--------+
+There are different types of joins given as follows:
+
+JOIN
+LEFT OUTER JOIN
+RIGHT OUTER JOIN
+FULL OUTER JOIN
+JOIN
+JOIN clause is used to combine and retrieve the records from multiple tables. JOIN is same as OUTER JOIN in SQL. A JOIN condition is to be raised using the primary keys and foreign keys of the tables.
+
+The following query executes JOIN on the CUSTOMER and ORDER tables, and retrieves the records:
+
+hive> SELECT c.ID, c.NAME, c.AGE, o.AMOUNT 
+FROM CUSTOMERS c JOIN ORDERS o 
+ON (c.ID = o.CUSTOMER_ID);
+On successful execution of the query, you get to see the following response:
+
++----+----------+-----+--------+ 
+| ID | NAME     | AGE | AMOUNT | 
++----+----------+-----+--------+ 
+| 3  | kaushik  | 23  | 3000   | 
+| 3  | kaushik  | 23  | 1500   | 
+| 2  | Khilan   | 25  | 1560   | 
+| 4  | Chaitali | 25  | 2060   | 
++----+----------+-----+--------+
+LEFT OUTER JOIN
+The HiveQL LEFT OUTER JOIN returns all the rows from the left table, even if there are no matches in the right table. This means, if the ON clause matches 0 (zero) records in the right table, the JOIN still returns a row in the result, but with NULL in each column from the right table.
+
+A LEFT JOIN returns all the values from the left table, plus the matched values from the right table, or NULL in case of no matching JOIN predicate.
+
+The following query demonstrates LEFT OUTER JOIN between CUSTOMER and ORDER tables:
+
+hive> SELECT c.ID, c.NAME, o.AMOUNT, o.DATE 
+FROM CUSTOMERS c 
+LEFT OUTER JOIN ORDERS o 
+ON (c.ID = o.CUSTOMER_ID);
+On successful execution of the query, you get to see the following response:
+
++----+----------+--------+---------------------+ 
+| ID | NAME     | AMOUNT | DATE                | 
++----+----------+--------+---------------------+ 
+| 1  | Ramesh   | NULL   | NULL                | 
+| 2  | Khilan   | 1560   | 2009-11-20 00:00:00 | 
+| 3  | kaushik  | 3000   | 2009-10-08 00:00:00 | 
+| 3  | kaushik  | 1500   | 2009-10-08 00:00:00 | 
+| 4  | Chaitali | 2060   | 2008-05-20 00:00:00 | 
+| 5  | Hardik   | NULL   | NULL                | 
+| 6  | Komal    | NULL   | NULL                | 
+| 7  | Muffy    | NULL   | NULL                | 
++----+----------+--------+---------------------+
+RIGHT OUTER JOIN
+The HiveQL RIGHT OUTER JOIN returns all the rows from the right table, even if there are no matches in the left table. If the ON clause matches 0 (zero) records in the left table, the JOIN still returns a row in the result, but with NULL in each column from the left table.
+
+A RIGHT JOIN returns all the values from the right table, plus the matched values from the left table, or NULL in case of no matching join predicate.
+
+The following query demonstrates RIGHT OUTER JOIN between the CUSTOMER and ORDER tables.
+
+notranslate"> hive> SELECT c.ID, c.NAME, o.AMOUNT, o.DATE FROM CUSTOMERS c RIGHT OUTER JOIN ORDERS o ON (c.ID = o.CUSTOMER_ID);
+On successful execution of the query, you get to see the following response:
+
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+| 3    | kaushik  | 3000   | 2009-10-08 00:00:00 | 
+| 3    | kaushik  | 1500   | 2009-10-08 00:00:00 | 
+| 2    | Khilan   | 1560   | 2009-11-20 00:00:00 | 
+| 4    | Chaitali | 2060   | 2008-05-20 00:00:00 | 
++------+----------+--------+---------------------+
+FULL OUTER JOIN
+The HiveQL FULL OUTER JOIN combines the records of both the left and the right outer tables that fulfil the JOIN condition. The joined table contains either all the records from both the tables, or fills in NULL values for missing matches on either side.
+
+The following query demonstrates FULL OUTER JOIN between CUSTOMER and ORDER tables:
+
+hive> SELECT c.ID, c.NAME, o.AMOUNT, o.DATE 
+FROM CUSTOMERS c 
+FULL OUTER JOIN ORDERS o 
+ON (c.ID = o.CUSTOMER_ID);
+On successful execution of the query, you get to see the following response:
+
++------+----------+--------+---------------------+ 
+| ID   | NAME     | AMOUNT | DATE                | 
++------+----------+--------+---------------------+ 
+| 1    | Ramesh   | NULL   | NULL                | 
+| 2    | Khilan   | 1560   | 2009-11-20 00:00:00 | 
+| 3    | kaushik  | 3000   | 2009-10-08 00:00:00 | 
+| 3    | kaushik  | 1500   | 2009-10-08 00:00:00 | 
+| 4    | Chaitali | 2060   | 2008-05-20 00:00:00 | 
+| 5    | Hardik   | NULL   | NULL                | 
+| 6    | Komal    | NULL   | NULL                |
+| 7    | Muffy    | NULL   | NULL                |  
+| 3    | kaushik  | 3000   | 2009-10-08 00:00:00 | 
+| 3    | kaushik  | 1500   | 2009-10-08 00:00:00 | 
+| 2    | Khilan   | 1560   | 2009-11-20 00:00:00 | 
+| 4    | Chaitali | 2060   | 2008-05-20 00:00:00 | 
++------+----------+--------+---------------------+

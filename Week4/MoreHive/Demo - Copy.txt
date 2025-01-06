@@ -1,0 +1,12 @@
+1,male,30,TN
+2,female,55,CA
+3,male,18,NV
+4,female,63,TX
+5,male,72,FL
+6,female,25,NJ
+7,male,27,FL
+8,female,32,TX
+9,male,55,NJ
+10,female,34,SC
+11,male,19,SC
+12,female,43,TN

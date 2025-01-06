@@ -1,0 +1,25 @@
+- What is a database in Mongo?
+- What is a collection?
+- What is a document? 
+- What rules does Mongo enforce about the structure of documents inside a collection?
+- 
+- What is a distributed application?  A distributed data store?
+- What is High Availability? How is it achieved in Mongo?
+- What is Scalability? How is it achieved in Mongo?
+- Explain replica sets and sharding
+-What are NoSQL databases? What are the different types of NoSQL databases?
+-What kind of NoSQL database MongoDB is?
+-Which are the most important features of MongoDB?
+-What is a Namespace in MongoDB?
+-Which all languages can be used with MongoDB?
+-Compare SQL databases and MongoDB at a high level.
+-How is MongoDB better than other SQL databases?
+-Compare MongoDB and CouchDB at high level.
+-Does MongoDB support foreign key constraints?
+-Does MongoDB support ACID transaction management and locking functionalities?
+-How can you achieve primary key - foreign key relationships in MongoDB?
+-When should we embed one document within another in MongoDB?
+- Explain can you move old files in the moveChunk directory?
+-Mention what is Objecld composed of?
+
+
