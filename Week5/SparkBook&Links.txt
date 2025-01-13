@@ -1,0 +1,31 @@
+Title	Learning Spark: Lightning-fast Data Analytics
+Authors	Jules S. Damji, Brooke Wenig, Tathagata Das, Denny Lee
+Edition	2, illustrated
+Publisher	O'Reilly Media, 2020
+ISBN	1492050040, 9781492050049
+Length	373 pages
+
+#bucket example
+https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.sql.DataFrameWriter.bucketBy.html
+
+
+https://spark.apache.org/docs/latest/api/python/
+
+https://spark.apache.org/docs/latest/api/python/getting_started/index.html
+
+https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html
+
+https://spark.apache.org/docs/latest/sql-getting-started.html
+
+https://spark.apache.org/docs/latest/rdd-programming-guide.html
+
+https://sparkbyexamples.com/
+
+https://sparkbyexamples.com/pyspark-tutorial/
+
+#accumulators
+https://sparkbyexamples.com/pyspark/pyspark-accumulator-with-example/
+
+
+#Spark Types or StuctFields
+https://sparkbyexamples.com/pyspark/pyspark-sql-types-datatype-with-examples/
