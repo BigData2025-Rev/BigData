@@ -1,6 +1,6 @@
 # Project 2 Requirements
 
-In this project, the Cohort will be divided into 4 teams.
+In this project, the Cohort will be divided into 5 teams.
 
 -   Each team will be tasked with the analysis of a large dataset (10-15
     thousand records) using our E-Commerce data structure.
@@ -20,7 +20,7 @@ swapped with other teams to find trends.
 
 ## The project timeline process
 
-1)  By the start of Friday, 01/17/2025, Each team should have produced a
+1)  By the End of the Day of Friday, 01/17/2025, Each team should have produced a
     data generator.
 
 -   This generator should output a .csv file with 10-15 thousand records
