@@ -1,0 +1,115 @@
+#Shared Variables.
+
+#1)Broadcast Variables
+#A broadcast variable is a wrapper provided by the SparkContext that serializes the data, sends it to #every worker node, and reuses the variable in every task that needs it. It is crucial to remember that #the value is read-only, and we cannot change it after creating the broadcast variable.
+
+broadcastVar = sc.broadcast([1, 2, 3])
+broadcastVar.value
+
+states = {"NY":"New York","CA":"California","FL":"Florida"}
+countries = {"USA":"United States of America","IN":"India"}
+
+broadcastStates = spark.sparkContext.broadcast(states)
+broadcastCountries = spark.sparkContext.broadcast(countries)
+
+data = [("James","Smith","USA","CA"),
+    ("Michael","Rose","USA","NY"),
+    ("Robert","Williams","USA","CA"),
+    ("Maria","Jones","USA","FL")]
+
+rdd = spark.sparkContext.parallelize(data)
+
+country = rdd.map(lambda f: f[2])
+state = rdd.map(lambda f: f[3])
+fullCountry = broadcastCountries.value
+fullState = broadcastStates.value
+
+	
+rdd2 = rdd.map(lambda f:(f[0],f[1],fullCountry,fullState))
+rdd2.collect()
+
+#2)Accumulators
+#Accumulators are variables which may be added to through associated operations.  There are many uses for #accumulators including implementing counters or sums.
+
+
+accum = sc.accumulator(0)
+sc.parallelize([1, 2, 3]).foreach(lambda x: accum.add(x))
+accum.value
+
+
+#3) Loading and saving data in spark
+
+textFile = sc.textFile("/user/will/test1.txt")
+counts = textFile.flatMap(lambda line: line.split(" ")).map(lambda word :(word, 1)).reduceByKey(lambda x,y: x+y)
+counts.saveAsTextFile("/user/will/count_new")
+
+
+
+#4)
+#More on dataframes
+
+#Interoperating RDD.
+
+peopleRDD = spark.sparkContext.textFile("/user/will/people.csv")
+Rdd2=peopleRDD.map(lambda x: x.split(","))
+
+PeopleDF1=spark.createDataFrame(data=Rdd2, schema = ["name","age"])
+PeopleDF=PeopleDF1.rdd.map(lambda attributes: (attributes[0], int(attributes[1])+1)).toDF(["name","age"])
+PeopleDF.createOrReplaceTempView("people")
+teenagersDF = spark.sql("SELECT name, age FROM people WHERE age BETWEEN 20 AND 25")
+teenagersDF.show()
+
+from pyspark.sql.types import *
+from pyspark.sql import Row
+
+peopleRDD = spark.sparkContext.textFile("/user/will/people.csv")
+peopleRDD.collect()
+rdd2=peopleRDD.map(lambda x: x.split(","))
+rdd2.collect()
+peopleRDD2=rdd2.map(lambda x: (x[0], int(x[1])))
+peopleRDD2.collect()
+schemaString = "name age"
+Person= Row(*schemaString.split(" "))
+person = peopleRDD2.map(lambda r: Person(*r))
+df2 = spark.createDataFrame(person)
+#or
+#df2 = person.toDF()
+df2.show()
+
+df2.createOrReplaceTempView("people")
+results = spark.sql("SELECT name FROM people")
+results.show()
+
+
+#Explode and Flatten Example
+from pyspark.sql.functions import explode, flatten
+
+arrayArrayData=[Row("James",[["Java","Scala","C++"],["Spark","Java"]]),
+    Row("Michael",[["Spark","Java","C++"],["Spark","Java"]]),
+    Row("Robert",[["CSharp","VB"],["Spark","Python"]])]
+
+arrayArraySchema=["name","subjects"]
+
+df = spark.createDataFrame(spark.sparkContext.parallelize(arrayArrayData),arrayArraySchema)
+#or
+#spark.sparkContext.parallelize(arrayArrayData).toDF(arrayArraySchema)
+
+df.show()
+df.printSchema()
+df.show(truncate=False)
+
+df2 = df.select(f"name",explode(f"subjects")).withColumnRenamed("col","subjects")
+
+#or
+#df2 = df.select(df["name"],explode(df["subjects"])).withColumnRenamed("col","subjects")
+   
+df2.printSchema()
+df2.show(truncate=False)
+
+#or if we wanted to flatten
+
+df.select(f"name",flatten(f"subjects").alias("subjects")).show(truncate=False)
+
+#or
+
+df.select(df['name'],flatten(df['subjects']).alias(df['subjects'])).show(truncate=False)
