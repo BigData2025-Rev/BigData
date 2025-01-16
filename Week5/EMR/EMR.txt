@@ -1,0 +1,8 @@
+#Add under arguments
+
+--data_source s3://<bucketName>/food_establishment_data.csv
+--output_uri s3://<bucketName>/myOutputFolder
+
+
+#tutorial
+https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs.html
