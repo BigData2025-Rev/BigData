@@ -1,0 +1,60 @@
+
+- What is Spark SQL?
+- How does a broadcast join work in Spark?
+- Why are broadcast joins significantly faster than shuffle joins?
+- How does Spark SQL evaluate a SQL query?
+- What is the catalyst optimizer?
+- Why are there multiple APIs to work with Spark SQL?
+- What are DataFrames?
+- What is the SparkSession?
+- Can we access the SparkContext via a SparkSession?
+- What other contexts are superseded by SparkSession?
+- What are some data formats we can query with Spark SQL?
+- Are Dataframes lazily evalauted, like RDDs?
+- List functions available to us when using DataFrames?
+- What's the difference between aggregate and scalar functions?
+- What is the return type of spark.sql("SELECT * FROM mytable") ?
+- How do you add a new column in Dataframes?
+- How do you rename column in dataframe?
+- What is the difference between inner, outer left, outer right, and outer full joins?
+- What is a cross join / cartesian join?
+- If I join two datasets with 10 records each, what is the maximum possible number of records in the output?
+- How many records would be in the output of a cross join/cartesian join?
+- What is Parquet? ORC? Avro?
+- What does it mean that parquet is columnar storage?
+- How can we partition files in Spark?
+- What are some benefits of storing your data in partitions?
+
+- What is the lineage of an RDD?
+- How can we see the Lineage?
+- What is the logical plan?  The physical plan?
+- How many partitions does a single task work on?
+- What’s the difference between cluster mode and client mode on YARN?
+- What is an executor?  What are executors when we run Spark on YARN?
+- What is AWS?
+- EC2?
+- S3?
+- EMR?
+- What does it mean to run an EMR Step Execution?
+- What does it mean to run an EMR Step Execution?
+- What is the Spark History Server?
+- What does it mean to “spill to disk” when executing spark tasks?
+- When during a Job do we need to pay attention to the number of partitions and adjust if necessary?
+- What is spark.driver.memory?  What about spark.executor.memory?
+- What is a Spark Application? Job? Stage? Task?
+- When we cache an RDD?
+- What are Persistence Storage Levels in Spark?
+  - Some levels have _SER, what does this mean?
+  - Some levels have _2, what does this mean?
+  - If the storage level for a persist is MEMORY_ONLY and there isn't enough memory, what happens?
+- What is the storage level for .cache()?
+-Different ways to repartition?
+-How to check the storagelevel
+
+- What is ETL?
+- What is Audit, Balance and control?
+
+- What is a data warehouse?
+- Give an example of a slowly changing dimension. 
+- What about scd type2?
+- Difference between OLTP vs OLAP? 
