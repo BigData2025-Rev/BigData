@@ -1,0 +1,34 @@
+1. pip install Flask kafka-python
+
+2. 
+# Run the following command to start ZooKeeper:
+cd  kafka_2.13-3.7.1
+bin/zookeeper-server-start.sh config/zookeeper.properties
+# There will be a lot of , and ZooKeeper will be ready in a short time, typically around a second or two.
+
+3.
+# Open another terminal session. Change the directory to the kafka directory, and start the Kafka broker:
+cd kafka_2.13-3.7.1
+bin/kafka-server-start.sh config/server.properties
+
+4. python app.py
+
+5. in Postman
+POST http://localhost:8080/kafka/publish?message=hello
+
+#(optional you can create topics from terminal)
+6. cd kafka_2.13-3.7.1
+bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+
+7. 
+bin/kafka-topics.sh --list  --bootstrap-server localhost:9092
+
+8. #to see the hello message published
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+9. #Stop Kafka
+a.	Stop the consumer and producer clients with Ctrl+C
+b.	Stop the Kafka broker with Ctrl+C
+c.	Stop the ZooKeeper server with Ctrl+C
+d.	Run the following command to clean up:
+	rm -rf /tmp/kafka-logs /tmp/zookeeper
